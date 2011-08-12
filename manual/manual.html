@@ -1,0 +1,287 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+  <title>ASCII-Paint v0.1 Manual</title>
+</head>
+<body>
+<h1>ASCII-Paint v0.3 Manual</h1>
+<h2>Introduction</h2>
+ASCII-Paint is a simple open source painting program which uses ASCII
+characters instead of pixels. It is made for roguelike developers but
+it can be used by anyone. It uses the excellent <a
+ href="http://jice.nospam.googlepages.com/libtcod">libtcod</a>.
+<h2>Quick Start</h2>
+The program is quite self-explanatory though there are a few things
+that are not entirely obvious.<br>
+<ul>
+  <li>Left clicking draws with the primary brush, right clicking draws
+with the secondary brush</li>
+  <li>Press Tab to hide/show the GUI</li>
+  <li>When drawing text, type the text, click the position where you
+want to place it then press enter to confirm</li>
+  <li>Press CTRL+Left Click to drag the canvas</li>
+  <li>Saving a file ending with a 'z' makes a compressed file(eg.
+myfile.ascz, myfile.acz, myfile.gz)<br>
+  </li>
+</ul>
+Also take a look at the color selector section<br>
+<h2>Features</h2>
+As of version 0.3 the following features are available:<br>
+<h4>GUI</h4>
+<ul>
+  <li>GUI based interface with tooltips</li>
+  <li>Keyboard shortcuts</li>
+  <li>Slider/text based color chooser</li>
+  <li>Fullscreen color chooser</li>
+  <li>Symbol chooser</li>
+  <li>Fullscreen support</li>
+  <li>Hiding/Unhiding GUI (pressing TAB)</li>
+  <li>Move mouse with keyboard (arrows and num pad)</li>
+  <li>Image and solid view modes<br>
+  </li>
+</ul>
+<h4>Drawing</h4>
+<ul>
+  <li>Arbitrary sized canvases<br>
+  </li>
+  <li>Draw single cells, lines, rectangles, ovals and text</li>
+  <li>Holding shift draws straight lines/squares/ovals</li>
+  <li>Flood filling</li>
+  <li>Color picker</li>
+  <li>Undo/redo</li>
+  <li>Primary and secondary brushes</li>
+</ul>
+<h4>Roguelike Tools</h4>
+<ul>
+  <li>Cells can be solid<br>
+  </li>
+  <li>Field of view tool<br>
+  </li>
+  <li>4 FOV algorithms</li>
+  <li>Path finding tool<br>
+  </li>
+</ul>
+<h4>File handling</h4>
+<ul>
+  <li>Opening and saving .asc files<br>
+  </li>
+  <li>Opening and saving compressed files (files ending with a 'z')</li>
+  <li>Importing text, foreground and background colors</li>
+  <li>Exporting .png, .bmp, text, foreground and background colors<br>
+  </li>
+</ul>
+<h4>Configuration</h4>
+<ul>
+  <li>Configurable options (ascii-paint.cfg)</li>
+  <ul>
+    <li>Window size</li>
+    <li>Full screen</li>
+    <li>Window Background color</li>
+    <li>FPS (frames per second)<br>
+    </li>
+    <li>Font<br>
+    </li>
+    <li>Canvas Size</li>
+    <li>Initial brush properties</li>
+    <li>GUI colors<br>
+    </li>
+  </ul>
+</ul>
+<h2>Shortcuts</h2>
+<br>
+<table style="text-align: left; width: 400px; height: 284px;" border="1"
+ cellpadding="2" cellspacing="2">
+  <tbody>
+    <tr>
+      <td style="vertical-align: top;">CTRL+N<br>
+      </td>
+      <td style="vertical-align: top;">New<br>
+      </td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top;">CTRL+O<br>
+      </td>
+      <td style="vertical-align: top;">Open<br>
+      </td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top;">CTRL+S<br>
+      </td>
+      <td style="vertical-align: top;">Save<br>
+      </td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top;">CTRL+Q<br>
+      </td>
+      <td style="vertical-align: top;">Quit<br>
+      </td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top;">CTRL+Z<br>
+      </td>
+      <td style="vertical-align: top;">Undo<br>
+      </td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top;">CTRL+Y</td>
+      <td style="vertical-align: top;">Redo<br>
+      </td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top;">CTRL+H</td>
+      <td style="vertical-align: top;">Hide/Show mouse<br>
+      </td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top;">TAB<br>
+      </td>
+      <td style="vertical-align: top;">Hide/Show GUI<br>
+      </td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top;">c<br>
+      </td>
+      <td style="vertical-align: top;">Cell<br>
+      </td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top;">l<br>
+      </td>
+      <td style="vertical-align: top;">Line<br>
+      </td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top;">r<br>
+      </td>
+      <td style="vertical-align: top;">Rect<br>
+      </td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top;">o<br>
+      </td>
+      <td style="vertical-align: top;">Oval<br>
+      </td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top;">f<br>
+      </td>
+      <td style="vertical-align: top;">Fill<br>
+      </td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top;">t<br>
+      </td>
+      <td style="vertical-align: top;">Text<br>
+      </td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top;">p<br>
+      </td>
+      <td style="vertical-align: top;">Pick<br>
+      </td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top;">Arrow Keys<br>
+      </td>
+      <td style="vertical-align: top;">Move the mouse<br>
+      </td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top;">Numpad<br>
+      </td>
+      <td style="vertical-align: top;">Move the mouse<br>
+      </td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top;">CTRL+Left Click<br>
+      </td>
+      <td style="vertical-align: top;">Drag the canvas view<br>
+      </td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top;">CTRL+Right Click<br>
+      </td>
+      <td style="vertical-align: top;">Reset canvas view<br>
+      </td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top;">ALT+ENTER<br>
+      </td>
+      <td style="vertical-align: top;">Switch to Fullscreen/Windowed<br>
+      </td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top;">SHIFT<br>
+      </td>
+      <td style="vertical-align: top;">Draw straight line/square/circle<br>
+      </td>
+    </tr>
+  </tbody>
+</table>
+<br>
+<h2>Color Selector</h2>
+You can open up the full screen color selector by clicking on a color
+box.<br>
+To select a color click on it.<br>
+To change the saturation of the colors, right click a color from the
+gray colors.<br>
+<br>
+<h2>Export/Import</h2>
+You can import and export text, foreground and background colors. In
+addition you can also export the current image to bmp and png.<br>
+Importing and exporting text is done by .txt files.<br>
+Foreground and background colors are .pngs where each pixel represents
+the foreground or background color of a cell in the image.<br>
+<h2>FOV</h2>
+FOV stands for Field Of View. FOV is used to see what someone standing
+at some point can see. ASCII-Paint currently offers 4 types of
+algorithms:<br>
+(taken from libtcod docs)<br>
+Basic : classic libtcod fov algorithm (ray casted from the player to
+all the cells on the submap perimeter)<br>
+Diamond : based on <a
+ href="http://www.geocities.com/temerra/los_rays.html">this algorithm</a><br>
+Shadow : based on <a
+ href="http://roguebasin.roguelikedevelopment.org/index.php?title=FOV_using_recursive_shadowcasting">this
+algorithm</a><br>
+Permissive : based on this <a
+ href="http://roguebasin.roguelikedevelopment.org/index.php?title=Precise_Permissive_Field_of_View">this
+algorithm</a>
+<h2>Configuration</h2>
+ASCII-Paint is configured using the ascii-paint.cfg file. Most of the
+options are quite obvious. In case you screw up the file, just copy
+ascii-paint.cfg.bak into ascii-paint.cfg.<br>
+Colors are specified by "#RRGGBB" or "rrr, ggg, bbb".<br>
+<br>
+For the font layout the following three options are available: <br>
+<ul>
+  <li>"incol" = the font has the characters going down in columns. ie b
+is underneath a<br>
+  </li>
+  <li>"inrow" = the font has the characters going across in rows. ie. b
+is to the right of a<br>
+  </li>
+  <li>"tcod" = for custom characters. Is not fully implemented yet.</li>
+</ul>
+The font type is either "greyscale" or "normal". "greyscale" means that
+gray pixels will be considered transparent. "normal" means all
+non-black pixels will be considered opaque.<br>
+<h2>Extra tips</h2>
+<ul>
+  <li>During the middle of a drawing operation, press the opposite
+mouse
+button erases the drawing. eg if you are holding down the left
+mouse button while drawing a line and then press the right mouse button
+at the same time, then that line is erased.</li>
+  <li>To make more fonts you can use this tool: <a
+ href="http://www.lmnopc.com/bitmapfontbuilder/">http://www.lmnopc.com/bitmapfontbuilder/</a></li>
+</ul>
+<h2>Using load_asc.hpp</h2>
+<h3>Example:</h3>
+<pre>AscFile asc;<br><br>if(!asc.load("test.asc")) {<br>	printf("Error\n");<br>} else {<br>	for(int x = 0; x &lt; asc.getWidth(); x++) {<br>		for(int y = 0; y &lt; asc.getHeight(); y++) {<br>			char c = asc.getChar(x, y);<br>			AscRgb f = asc.getFore(x, y);<br>			AscRgb b = asc.getBack(x, y);<br>			bool solid = asc.getSolid(x, y);<br><br>			screen-&gt;setChar(x, y, c);<br>			screen-&gt;setFore(x, y, f.r, f.g, f.b);<br>			screen-&gt;setBack(x, y, b.r, b.g, b.b);<br>		}<br>	}<br>}<br></pre>
+<h2>Final Words</h2>
+If you have any comments, suggestions, bugs please contact me at the
+project page, forums or by email. Thanks for using ASCII-Paint!<br>
+website: http://code.google.com/p/ascii-paint/<br>
+</body>
+</html>

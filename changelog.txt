@@ -1,0 +1,70 @@
+ASCII-Paint Changelog:
+
++ New Feature
+/ Change
+- Removed feature
+* Bugfix
+
+TODO:
+
+v0.3.1 - 22-04-10
++ Updated to use libtcod 1.5
+/ Made brushes solid by default
+
+
+v0.3 To Be Released
++ Added New, Open, Save and Quit dialogs
++ Canvases can be any size.
++ Added solid as a brush parameter
++ Added FOV tool
++ Files are compressed if they end with z(eg hello.ascz, hello.gz, hello.acz etc)
++ Mouse can be controlled by keyboard (using arrows or keypad)
++ Added Export bmp, png, text, foreground color, background color
++ Added Import text, foreground color, background color
++ Configurable options (ascii-paint.cfg)
+	= Window Size
+	= Canvas Size
+	= GUI colors
+	= Font properties
++ Canvases can be dragged to change view (CTRL+Left click)
++ View Selector(image and solid)
++ When quitting unsaved changes dialog is shown
++ FPS display
++ More keyboard shortcuts
+* Ovals now work properly
+
+v0.2 03-02-09
++ Added symbol selecter
++ Added info box to color selector
++ Added keyboard shortcuts for undo/redo
++ When saving test.txt is also created. It contains just the symbols of the
+drawing
++ Added asc_file.hpp which allows you to load and save .asc files
++ Added options for whether to draw the symbol, foreground, or background
++ Added options for whether to pick symbol, foreground or background
++ Pressing CTRL+H hides/unhides the mouse
++ 'New' button is now functional
+/ Make TAB switch GUI hiding/unhiding
+/ Made color box activate by clicking not by mouse press
+/ Changed the FPS from 30 to 60
+/ Changed the icon for the checkboxes (By replacing the beta and lowercase
+		sigma characters)
+/ File and Tool buttons changed from ToggleButtons to normal buttons
+- Remove partial GUI hiding
+- Export button removed (will be added later when it is functional)
+* Fixed drawing interfering with widgets
+* Filled rectangles without outlines now draw using the correct brush
+* Fixed the rgb sliders not being synced when colors changed through color box
+* Fixed pure black not appearing in color chooser
+* Making a change after undo clears redo list.
+* Cell RadioButton is now selected on startup
+
+v0.1 29-01-2009
+- First ASCII-Paint public release
+
+v0.0 21-01-2009
+- ASCII-Paint development started
+
+Potential Bugs:
+I've used 'new' many times without using 'delete'. I need to learn how and
+when to use them
