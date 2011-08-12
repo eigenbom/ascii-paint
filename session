@@ -1,0 +1,390 @@
+let SessionLoad = 1
+if &cp | set nocp | endif
+let s:cpo_save=&cpo
+set cpo&vim
+imap <S-Tab> 
+nmap <silent> ,cI :call NERDComment(0, "prepend")
+nmap <silent> ,cA :call NERDComment(0, "append")
+nnoremap <silent> ,c$ :call NERDComment(0, "toEOL")
+vnoremap <silent> ,cu :call NERDComment(1, "uncomment")
+nnoremap <silent> ,cu :call NERDComment(0, "uncomment")
+vnoremap <silent> ,cn :call NERDComment(1, "nested")
+nnoremap <silent> ,cn :call NERDComment(0, "nested")
+vnoremap <silent> ,cb :call NERDComment(1, "alignBoth")
+nnoremap <silent> ,cb :call NERDComment(0, "alignBoth")
+vnoremap <silent> ,cr :call NERDComment(1, "alignRight")
+nnoremap <silent> ,cr :call NERDComment(0, "alignRight")
+vnoremap <silent> ,cl :call NERDComment(1, "alignLeft")
+nnoremap <silent> ,cl :call NERDComment(0, "alignLeft")
+vmap <silent> ,cy :call NERDComment(1, "yank")
+nmap <silent> ,cy :call NERDComment(0, "yank")
+vnoremap <silent> ,ci :call NERDComment(1, "invert")
+nnoremap <silent> ,ci :call NERDComment(0, "invert")
+vnoremap <silent> ,cs :call NERDComment(1, "sexy")
+nnoremap <silent> ,cs :call NERDComment(0, "sexy")
+vnoremap <silent> ,cm :call NERDComment(1, "minimal")
+nnoremap <silent> ,cm :call NERDComment(0, "minimal")
+vnoremap <silent> ,c  :call NERDComment(1, "toggle")
+nnoremap <silent> ,c  :call NERDComment(0, "toggle")
+vnoremap <silent> ,cc :call NERDComment(1, "norm")
+nnoremap <silent> ,cc :call NERDComment(0, "norm")
+xmap S <Plug>VSurround
+nmap \ihn :IHN
+nmap \is :IHS:A
+nmap \ih :IHS
+nmap cs <Plug>Csurround
+nmap ds <Plug>Dsurround
+nmap gx <Plug>NetrwBrowseX
+xmap s <Plug>Vsurround
+nmap ySS <Plug>YSsurround
+nmap ySs <Plug>YSsurround
+nmap yss <Plug>Yssurround
+nmap yS <Plug>YSurround
+nmap ys <Plug>Ysurround
+map <F6> :cd:cd ~/code/ascii-paint
+map <F7> :mksession! session
+map <F5> :!./build-run.sh
+nnoremap <silent> <Plug>NetrwBrowseX :call netrw#NetrwBrowseX(expand("<cWORD>"),0)
+map <F12> :!ctags -R --c++-kinds=+p --fields=+iaS --extra=+q .
+nnoremap <silent> <F8> :TlistToggle
+map <F7>:mksession! .vimsession
+inoremap <silent>   <BS>:call NERDComment(0, "insert")
+imap S <Plug>ISurround
+imap s <Plug>Isurround
+imap 	 
+imap  <Plug>Isurround
+inoremap <expr>  omni#cpp#maycomplete#Complete()
+imap  =CtrlXPP()
+inoremap <expr> . omni#cpp#maycomplete#Dot()
+inoremap <expr> : omni#cpp#maycomplete#Scope()
+inoremap <expr> > omni#cpp#maycomplete#Arrow()
+imap \ihn :IHN
+imap \is :IHS:A
+imap \ih :IHS
+let &cpo=s:cpo_save
+unlet s:cpo_save
+set background=dark
+set backspace=indent,eol,start
+set cindent
+set completeopt=menuone
+set fileencodings=ucs-bom,utf-8,default,latin1
+set helplang=en
+set history=50
+set incsearch
+set nomodeline
+set omnifunc=omni#cpp#complete#Main
+set printoptions=paper:a4
+set ruler
+set runtimepath=~/.vim,/var/lib/vim/addons,/usr/share/vim/vimfiles,/usr/share/vim/vim71,/usr/share/vim/vimfiles/after,/var/lib/vim/addons/after,~/.vim/after
+set shiftwidth=4
+set smartcase
+set suffixes=.bak,~,.swp,.o,.info,.aux,.log,.dvi,.bbl,.blg,.brf,.cb,.ind,.idx,.ilg,.inx,.out,.toc
+set tabstop=4
+let s:so_save = &so | let s:siso_save = &siso | set so=0 siso=0
+let v:this_session=expand("<sfile>:p")
+silent only
+cd ~/code/ascii-paint
+if expand('%') == '' && !&modified && line('$') <= 1 && getline(1) == ''
+  let s:wipebuf = bufnr('%')
+endif
+set shortmess=aoO
+badd +5 main.cpp
+badd +44 message_box.cpp
+badd +34 message_box.h
+badd +13 Makefile
+badd +52 new_operation.cpp
+badd +36 open_operation.cpp
+badd +37 save_operation.cpp
+badd +1 app
+badd +64 app.cpp
+badd +1 bugs.txt
+badd +7 ~/.vimrc
+badd +3 todo.txt
+badd +1 changelog.txt
+badd +95 app.h
+badd +3 quit_operation.cpp
+badd +1 save_operation.h
+badd +4 debug.h
+badd +1 cell_operation.cpp
+badd +1 cell_operation.h
+badd +84 line_operation.cpp
+badd +54 rect_operation.cpp
+badd +98 oval_operation.cpp
+badd +93 fill_operation.cpp
+badd +8 fill_operation.h
+badd +65 text_operation.cpp
+badd +37 pick_operation.cpp
+badd +5 misc.h
+badd +10 misc.cpp
+badd +83 app_gui.h
+badd +307 app_gui.cpp
+badd +1 app_user.h
+badd +1 app_user.cpp
+badd +22 SConstruct
+badd +10 operation.h
+badd +11 operation.cpp
+badd +3 redo_operation.cpp
+badd +3 undo_operation.cpp
+badd +1 libtcod++.so
+badd +8 line_operation.h
+badd +8 new_operation.h
+badd +8 open_operation.h
+badd +16 oval_operation.h
+badd +8 pick_operation.h
+badd +1 quit_operation.h
+badd +8 rect_operation.h
+badd +8 redo_operation.h
+badd +9 text_operation.h
+badd +8 undo_operation.h
+badd +17 app_data.h
+badd +81 app_data.cpp
+badd +22 ascii-paint.cfg
+badd +17 export_operation.h
+badd +189 export_operation.cpp
+badd +17 import_operation.h
+badd +107 import_operation.cpp
+badd +4 ./build-run.sh
+badd +10 brush.h
+badd +2 hints.txt
+badd +1 jan.asc
+badd +6 los_operation.h
+badd +5 los_operation.cpp
+badd +17 fov_operation.cpp
+badd +20 fov_operation.h
+badd +1 scrap
+badd +8 color_box.cpp
+badd +20 color_box.h
+badd +19 path_operation.h
+badd +54 path_operation.cpp
+args Makefile
+edit message_box.cpp
+set splitbelow splitright
+wincmd _ | wincmd |
+vsplit
+1wincmd h
+wincmd w
+set nosplitbelow
+set nosplitright
+wincmd t
+set winheight=1 winwidth=1
+exe 'vert 1resize ' . ((&columns * 90 + 90) / 180)
+exe 'vert 2resize ' . ((&columns * 89 + 90) / 180)
+argglobal
+setlocal keymap=
+setlocal noarabic
+setlocal noautoindent
+setlocal nobinary
+setlocal bufhidden=
+setlocal buflisted
+setlocal buftype=
+setlocal cindent
+setlocal cinkeys=0{,0},0),:,0#,!^F,o,O,e
+setlocal cinoptions=
+setlocal cinwords=if,else,while,do,for,switch
+setlocal comments=sO:*\ -,mO:*\ \ ,exO:*/,s1:/*,mb:*,ex:*/,://
+setlocal commentstring=/*%s*/
+setlocal complete=.,w,b,u,t,i
+setlocal completefunc=
+setlocal nocopyindent
+setlocal nocursorcolumn
+setlocal nocursorline
+setlocal define=
+setlocal dictionary=
+setlocal nodiff
+setlocal equalprg=
+setlocal errorformat=
+setlocal noexpandtab
+if &filetype != 'cpp'
+setlocal filetype=cpp
+endif
+setlocal foldcolumn=0
+setlocal foldenable
+setlocal foldexpr=0
+setlocal foldignore=#
+setlocal foldlevel=0
+setlocal foldmarker={{{,}}}
+setlocal foldmethod=manual
+setlocal foldminlines=1
+setlocal foldnestmax=20
+setlocal foldtext=foldtext()
+setlocal formatexpr=
+setlocal formatoptions=croql
+setlocal formatlistpat=^\\s*\\d\\+[\\]:.)}\\t\ ]\\s*
+setlocal grepprg=
+setlocal iminsert=0
+setlocal imsearch=0
+setlocal include=
+setlocal includeexpr=
+setlocal indentexpr=
+setlocal indentkeys=0{,0},:,0#,!^F,o,O,e
+setlocal noinfercase
+setlocal iskeyword=@,48-57,_,192-255
+setlocal keywordprg=
+setlocal nolinebreak
+setlocal nolisp
+setlocal nolist
+setlocal makeprg=
+setlocal matchpairs=(:),{:},[:]
+setlocal nomodeline
+setlocal modifiable
+setlocal nrformats=octal,hex
+setlocal nonumber
+setlocal numberwidth=4
+setlocal omnifunc=omni#cpp#complete#Main
+setlocal path=
+setlocal nopreserveindent
+setlocal nopreviewwindow
+setlocal quoteescape=\\
+setlocal noreadonly
+setlocal norightleft
+setlocal rightleftcmd=search
+setlocal noscrollbind
+setlocal shiftwidth=4
+setlocal noshortname
+setlocal nosmartindent
+setlocal softtabstop=0
+setlocal nospell
+setlocal spellcapcheck=[.?!]\\_[\\])'\"\	\ ]\\+
+setlocal spellfile=
+setlocal spelllang=en
+setlocal statusline=
+setlocal suffixesadd=
+setlocal swapfile
+setlocal synmaxcol=3000
+if &syntax != 'cpp'
+setlocal syntax=cpp
+endif
+setlocal tabstop=4
+setlocal tags=
+setlocal textwidth=0
+setlocal thesaurus=
+setlocal nowinfixheight
+setlocal nowinfixwidth
+setlocal wrap
+setlocal wrapmargin=0
+silent! normal! zE
+let s:l = 39 - ((19 * winheight(0) + 19) / 38)
+if s:l < 1 | let s:l = 1 | endif
+exe s:l
+normal! zt
+39
+normal! 010l
+wincmd w
+argglobal
+edit save_operation.cpp
+setlocal keymap=
+setlocal noarabic
+setlocal noautoindent
+setlocal nobinary
+setlocal bufhidden=
+setlocal buflisted
+setlocal buftype=
+setlocal cindent
+setlocal cinkeys=0{,0},0),:,0#,!^F,o,O,e
+setlocal cinoptions=
+setlocal cinwords=if,else,while,do,for,switch
+setlocal comments=sO:*\ -,mO:*\ \ ,exO:*/,s1:/*,mb:*,ex:*/,://
+setlocal commentstring=/*%s*/
+setlocal complete=.,w,b,u,t,i
+setlocal completefunc=
+setlocal nocopyindent
+setlocal nocursorcolumn
+setlocal nocursorline
+setlocal define=
+setlocal dictionary=
+setlocal nodiff
+setlocal equalprg=
+setlocal errorformat=
+setlocal noexpandtab
+if &filetype != 'cpp'
+setlocal filetype=cpp
+endif
+setlocal foldcolumn=0
+setlocal foldenable
+setlocal foldexpr=0
+setlocal foldignore=#
+setlocal foldlevel=0
+setlocal foldmarker={{{,}}}
+setlocal foldmethod=manual
+setlocal foldminlines=1
+setlocal foldnestmax=20
+setlocal foldtext=foldtext()
+setlocal formatexpr=
+setlocal formatoptions=croql
+setlocal formatlistpat=^\\s*\\d\\+[\\]:.)}\\t\ ]\\s*
+setlocal grepprg=
+setlocal iminsert=0
+setlocal imsearch=0
+setlocal include=
+setlocal includeexpr=
+setlocal indentexpr=
+setlocal indentkeys=0{,0},:,0#,!^F,o,O,e
+setlocal noinfercase
+setlocal iskeyword=@,48-57,_,192-255
+setlocal keywordprg=
+setlocal nolinebreak
+setlocal nolisp
+setlocal nolist
+setlocal makeprg=
+setlocal matchpairs=(:),{:},[:]
+setlocal nomodeline
+setlocal modifiable
+setlocal nrformats=octal,hex
+setlocal nonumber
+setlocal numberwidth=4
+setlocal omnifunc=omni#cpp#complete#Main
+setlocal path=
+setlocal nopreserveindent
+setlocal nopreviewwindow
+setlocal quoteescape=\\
+setlocal noreadonly
+setlocal norightleft
+setlocal rightleftcmd=search
+setlocal noscrollbind
+setlocal shiftwidth=4
+setlocal noshortname
+setlocal nosmartindent
+setlocal softtabstop=0
+setlocal nospell
+setlocal spellcapcheck=[.?!]\\_[\\])'\"\	\ ]\\+
+setlocal spellfile=
+setlocal spelllang=en
+setlocal statusline=
+setlocal suffixesadd=
+setlocal swapfile
+setlocal synmaxcol=3000
+if &syntax != 'cpp'
+setlocal syntax=cpp
+endif
+setlocal tabstop=4
+setlocal tags=
+setlocal textwidth=0
+setlocal thesaurus=
+setlocal nowinfixheight
+setlocal nowinfixwidth
+setlocal wrap
+setlocal wrapmargin=0
+silent! normal! zE
+let s:l = 41 - ((37 * winheight(0) + 19) / 38)
+if s:l < 1 | let s:l = 1 | endif
+exe s:l
+normal! zt
+41
+normal! 0
+wincmd w
+exe 'vert 1resize ' . ((&columns * 90 + 90) / 180)
+exe 'vert 2resize ' . ((&columns * 89 + 90) / 180)
+tabnext 1
+if exists('s:wipebuf')
+  silent exe 'bwipe ' . s:wipebuf
+endif
+unlet! s:wipebuf
+set winheight=1 winwidth=20 shortmess=filnxtToO
+let s:sx = expand("<sfile>:p:r")."x.vim"
+if file_readable(s:sx)
+  exe "source " . s:sx
+endif
+let &so = s:so_save | let &siso = s:siso_save
+doautoall SessionLoadPost
+unlet SessionLoad
+" vim: set ft=vim :

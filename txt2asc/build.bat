@@ -1,0 +1,1 @@
+g++ *.cpp -s -o txt2asc.exe && txt2asc.exe
