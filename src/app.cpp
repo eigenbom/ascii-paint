@@ -145,8 +145,8 @@ int App::exec() {
 
 		if (showGrid){
 			// draw grid points at the intersections
-			for(int x=canvasOffsetX;x<canvasOffsetX+blitWidth;x+=gridW){
-				for(int y=canvasOffsetY;y<canvasOffsetY+blitHeight;y+=gridH){
+			for(int x=canvasOffsetX;x<canvasOffsetX+canvasWidth;x+=gridW){
+				for(int y=canvasOffsetY;y<canvasOffsetY+canvasHeight;y+=gridH){
 					TCODConsole::root->putChar(x,y,TCOD_CHAR_BULLET, TCOD_BKGND_NONE);
 				}
 			}
