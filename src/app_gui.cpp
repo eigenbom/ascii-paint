@@ -383,14 +383,14 @@ void AppGui::build() {
 	view->addWidget(viewGridToggleButton);
 	// view->addWidget(viewSolidToggleButton);
 
-	gwSlider = new Slider2(0, 0, 2, 1.0f, 32.0f, "W", "Grid width");
+	gwSlider = new Slider2(0, 0, 3, 1.0f, 128.0f, "W", "Grid width");
 	gwSlider->setFormat("%.0f");
 	gwSlider->setValue((float)app->gridW);
 	gwSlider->setSensitivity(4);
 	gwSlider->setCallback(changeGridDimensionsCbk, &app->gridW);
 	view->addWidget(gwSlider);
 
-	ghSlider = new Slider2(0, 0, 2, 1.0f, 32.0f, "H", "Grid height");
+	ghSlider = new Slider2(0, 0, 3, 1.0f, 128.0f, "H", "Grid height");
 	ghSlider->setFormat("%.0f");
 	ghSlider->setValue((float)app->gridH);
 	ghSlider->setSensitivity(4);
