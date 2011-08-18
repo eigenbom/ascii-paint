@@ -16,6 +16,7 @@ class ExportOperation : public Operation {
 
 void doExportPngCbk(Widget *wid, void *data);
 void doExportBmpCbk(Widget *wid, void *data);
+void doExportGifCbk(Widget *wid, void *data);
 void doExportTextCbk(Widget *wid, void *data);
 void doExportForeCbk(Widget *wid, void *data);
 void doExportBackCbk(Widget *wid, void *data);

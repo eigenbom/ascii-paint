@@ -13,6 +13,8 @@ IF(CMAKE_COMPILER_IS_GNUCXX)
 ENDIF(CMAKE_COMPILER_IS_GNUCXX)
 
 include_directories(include)
+include_directories(include/gd)
+
 link_directories(${BASE_DIR}/lib)
 
 add_subdirectory(${BASE_DIR}/src)

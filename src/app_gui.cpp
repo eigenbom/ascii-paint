@@ -320,11 +320,12 @@ void AppGui::build() {
 	pickBackgroundToggleButton->setPressed(true);
 	pickSolidToggleButton->setPressed(true);
 
-	exportPngButton = new LButton("Export PNG", "Export the current image to a .png file", doExportPngCbk, NULL);
-	exportBmpButton = new LButton("Export BMP", "Export the current image to a .bmp file", doExportBmpCbk, NULL);
-	exportTextButton = new LButton("Export Text", "Export the symbols of the current image to a .txt file", doExportTextCbk, NULL);
-	exportForeButton = new LButton("Export Fore", "Export the foreground colors of the image to a .png file", doExportForeCbk, NULL);
-	exportBackButton = new LButton("Export Back", "Export the background colors of the image to a .png file", doExportBackCbk, NULL);
+	exportPngButton = new LButton(".png", "Export the current image to a .png file", doExportPngCbk, NULL);
+	exportBmpButton = new LButton(".bmp", "Export the current image to a .bmp file", doExportBmpCbk, NULL);
+	exportGifButton = new LButton(".gif", "Export the current image to an animated .gif file", doExportGifCbk, NULL);
+	exportTextButton = new LButton(".txt", "Export the symbols of the current image to a .txt file", doExportTextCbk, NULL);
+	exportForeButton = new LButton(".png (fg)", "Export the foreground colors of the image to a .png file", doExportForeCbk, NULL);
+	exportBackButton = new LButton(".png (bg)", "Export the background colors of the image to a .png file", doExportBackCbk, NULL);
 
 	importTextButton = new LButton("Import Text", "Import the symbols of the current image from a .txt file", doImportTextCbk, NULL);
 	importForeButton = new LButton("Import Fore", "Import the foreground colors of the image from a .png file", doImportForeCbk, NULL);
@@ -354,6 +355,7 @@ void AppGui::build() {
 	pickSolidToggleButton->setVisible(false);
 	options->addWidget(exportPngButton);
 	options->addWidget(exportBmpButton);
+	options->addWidget(exportGifButton);
 	options->addWidget(exportTextButton);
 	options->addWidget(exportForeButton);
 	options->addWidget(exportBackButton);
@@ -566,6 +568,7 @@ void AppGui::hideAllOptions() {
 
 	exportPngButton->setVisible(false);
 	exportBmpButton->setVisible(false);
+	exportGifButton->setVisible(false);
 	exportTextButton->setVisible(false);
 	exportForeButton->setVisible(false);
 	exportBackButton->setVisible(false);

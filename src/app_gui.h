@@ -79,6 +79,7 @@ class AppGui : public AppUser {
 		ToggleButton *pickSolidToggleButton;
 		Button *exportPngButton;
 		Button *exportBmpButton;
+		Button *exportGifButton;
 		Button *exportTextButton;
 		Button *exportForeButton;
 		Button *exportBackButton;

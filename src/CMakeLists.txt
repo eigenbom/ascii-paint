@@ -7,7 +7,7 @@ ADD_EXECUTABLE(ascii-paint
     cell_operation.cpp
     color_box.cpp
     colour_widget.cpp
-    copy_operation.cpp
+    copy_operation.cpp    
     export_operation.cpp
     fill_operation.cpp
     fov_operation.cpp
@@ -38,7 +38,7 @@ ADD_EXECUTABLE(ascii-paint
     undo_operation.cpp
 )
 
-target_link_libraries(ascii-paint tcod-mingw tcod-gui-mingw)
+target_link_libraries(ascii-paint tcod-mingw tcod-gui-mingw gd)
 
 INSTALL(TARGETS ascii-paint DESTINATION .)
 if(WIN32)
