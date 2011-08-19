@@ -1,5 +1,7 @@
 #include <cstdio>
 #include <cstring>
+#include <cmath>
+
 #include "app.h"
 #include "app_data.h"
 
@@ -92,6 +94,9 @@ void AppData::load() {
 	app->gui->backgroundColor2 = parser.getColorProperty("gui.background_color2");
 	app->gui->foregroundColor1 = parser.getColorProperty("gui.foreground_color1");
 	app->gui->foregroundColor2 = parser.getColorProperty("gui.foreground_color2");
+
+	// finally, load the palettes
+	loadPalettes();
 }
 
 void AppData::save() {
@@ -164,6 +169,129 @@ void AppData::save() {
 	} fprintf(fp, "}\n");
 
 	fclose(fp);
+}
+
+class MyListener : public ITCODParserListener, AppUser {
+public:
+	Palette* cp; // current palette
+
+	MyListener():ITCODParserListener(){
+		cp = NULL;
+	}
+
+    bool parserNewStruct(TCODParser *parser,const TCODParserStruct *str,const char *name) {
+        // printf ("new structure type '%s' with name '%s'\n",str->getName(),name ? name : "NULL");
+        if (strcmp(str->getName(),"palette")==0){
+        	cp = new Palette();
+        	cp->name = name;
+        	cp->colours = TCODList<TCODColor>();
+        	cp->width = 1;
+        	cp->height = 1;
+        	return true;
+        }
+        else return false;
+    }
+
+    bool parserFlag(TCODParser *parser,const char *name) {
+        // printf ("found new flag '%s'\n",name);
+        return true;
+    }
+
+    bool parserProperty(TCODParser *parser,const char *name, TCOD_value_type_t type, TCOD_value_t value) {
+        // printf ("found new property '%s'\n",name);
+        if (strcmp(name,"colours")==0){
+        	TCODList<TCODColor> colours = value.list;
+        	cp->colours = colours;
+        	cp->height = 1+(cp->colours.size()-1)/cp->width;
+        	// cp->height = cp->colours.size() / cp->width;
+        	return true;
+        }
+        else if (strcmp(name,"width")==0){
+        	cp->width = std::max(0,value.i);
+        	if (cp->colours.size()>0){
+        		// 1+(p->colours.size()-1)/p->width;
+        		cp->height = 1+(cp->colours.size()-1)/cp->width;
+        	}
+        	return true;
+        }
+        else return false;
+    }
+
+    bool parserEndStruct(TCODParser *parser,const TCODParserStruct *str,const char *name) {
+        // printf ("end of structure '%s'\n",name);
+    	if (cp->name!=name) return false;
+    	else {
+    		app->palettes.push(cp);
+    		if (app->currentPaletteIndex==-1)
+    			app->currentPaletteIndex = 0;
+    		return true;
+    	}
+    }
+
+    void error(const char *msg) {
+        fprintf(stderr,msg);
+        exit(1);
+    }
+};
+
+void AppData::loadPalettes(){
+	TCODParser parser;
+
+	TCODParserStruct *paletteTypeStruct = parser.newStructure("palette");
+	// paletteTypeStruct->addProperty("name", TCOD_TYPE_STRING, true);
+	paletteTypeStruct->addProperty("width", TCOD_TYPE_INT, true);
+	paletteTypeStruct->addListProperty("colours", TCOD_TYPE_COLOR, true);
+
+	parser.run("palettes.cfg", new MyListener());
+
+	// Also add libTCOD's nice range of colours
+	Palette* p = new Palette;
+	p->name = "LIBTCOD";
+	p->width = TCOD_COLOR_LEVELS*2;
+	for(int col=0;col<TCOD_COLOR_NB;col++){
+		for(int s=0;s<TCOD_COLOR_LEVELS;s++){
+			p->colours.push(TCODColor::colors[col][s]);
+		}
+	}
+
+	TCODColor more[] = {
+		// greys
+		 TCODColor::black,
+		 TCODColor::darkestGrey,
+		 TCODColor::darkerGrey,
+		 TCODColor::darkGrey,
+		 TCODColor::grey,
+		 TCODColor::lightGrey,
+		 TCODColor::lighterGrey,
+		 TCODColor::lightestGrey,
+		 TCODColor::white,
+
+		//sepia
+		 TCODColor::darkestSepia,
+		 TCODColor::darkerSepia,
+		 TCODColor::darkSepia,
+		 TCODColor::sepia,
+		 TCODColor::lightSepia,
+		 TCODColor::lighterSepia,
+		TCODColor::lightestSepia,
+
+		// metallic
+		TCODColor::brass,
+		TCODColor::copper,
+		TCODColor::gold,
+		TCODColor::silver,
+
+		// miscellaneous
+		TCODColor::celadon,
+		TCODColor::peach};
+
+	int nummore = sizeof(more)/sizeof(TCODColor);
+	for(int i=0;i<nummore;i++){
+		p->colours.push(more[nummore-1-i]);
+	}
+
+	p->height = 1+(p->colours.size()-1)/p->width;
+	app->palettes.push(p);
 }
 
 void AppData::setFilename(char *name) {

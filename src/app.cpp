@@ -27,6 +27,7 @@
 App* App::instance = NULL;
 
 App::App()
+:currentPaletteIndex(-1)
 {
         AppUser::setApp(this);
         gui = new AppGui;
@@ -51,11 +52,13 @@ int App::exec() {
 	quit = false;
 
 	TCODConsole::setCustomFont(fontFilename.c_str(), fontType | fontLayout);
-	TCODConsole::initRoot(windowWidth, windowHeight, "ASCII Paint v0.3 / bp.io fork", fullscreen);
+	TCODConsole::initRoot(windowWidth, windowHeight, "super ascii funtime program O_o", fullscreen);
 	TCODMouse::showCursor(true);
 	TCODSystem::setFps(fpsGoal);
 
 	TCODConsole::root->setDefaultBackground(windowBackgroundColor);
+
+	// TCODConsole::credits();
 
 	canvasCon = NULL;
 	solidCon = NULL;
@@ -104,11 +107,14 @@ int App::exec() {
 		TCODConsole::root->setDefaultBackground(windowBackgroundColor);
 		TCODConsole::root->setDefaultForeground(TCODColor::darkGrey);
 		TCODConsole::root->clear();
+		/*
 		for(int i=0;i<windowWidth;i++){
 			for(int j=0;j<windowWidth;j++){
 				TCODConsole::root->putChar(i,j,TCOD_CHAR_BLOCK1);
 			}
 		}
+		*/
+		// TCODConsole::root->putChar(i,j,TCOD_CHAR_CROSS);
 
 		int blitSrcX;
 		int blitSrcY;
@@ -152,6 +158,12 @@ int App::exec() {
 			}
 		}
 
+		// Show frame corners
+		TCODConsole::root->putChar(canvasOffsetX-1,canvasOffsetY-1,TCOD_CHAR_NW, TCOD_BKGND_NONE);
+		TCODConsole::root->putChar(canvasOffsetX+canvasWidth,canvasOffsetY-1,TCOD_CHAR_NE, TCOD_BKGND_NONE);
+		TCODConsole::root->putChar(canvasOffsetX-1,canvasOffsetY+canvasHeight,TCOD_CHAR_SW, TCOD_BKGND_NONE);
+		TCODConsole::root->putChar(canvasOffsetX+canvasWidth,canvasOffsetY+canvasHeight,TCOD_CHAR_SE, TCOD_BKGND_NONE);
+
 		gui->draw();
 		TCODConsole::flush();
 	}
@@ -162,6 +174,10 @@ int App::exec() {
 }
 
 App::~App() {
+	for(int i=0;i<palettes.size();i++){
+		delete palettes.get(i);
+	}
+	palettes.clear();
 }
 
 void App::initBrushes() {

@@ -3,11 +3,14 @@
 
 #include <string>
 #include <vector>
+#include <list>
+
 #include "app_gui.h"
 #include "app_data.h"
 #include "libtcod.hpp"
 #include "gui/gui.hpp"
 
+#include "palette.h"
 #include "brush.h"
 #include "color_box.h"
 #include "operation.h"
@@ -120,6 +123,9 @@ class App {
 		Brush brush2;
 		Brush initBrush1;
 		Brush initBrush2;
+
+		TCODList<Palette*> palettes;
+		int currentPaletteIndex;
 
 	private:
 		void handleKeyboardShortcuts();

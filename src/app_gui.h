@@ -4,6 +4,7 @@
 #include "gui/gui.hpp"
 #include "app_user.h"
 #include "lradio_button.h"
+#include "colour_widget.h"
 
 class App;
 class ColorBox;
@@ -24,6 +25,8 @@ class AppGui : public AppUser {
 		TCODColor backgroundColor2;
 		TCODColor foregroundColor1;
 		TCODColor foregroundColor2;
+
+		ColourWidget* colourWidget;
 
 		LRadioButton *cellOperationButton;
 		LRadioButton *lineOperationButton;
@@ -121,6 +124,6 @@ void operationCbk(Widget *wid, void *data);
 void otherChangeSymbolCallback(Widget *wid, void *data);
 void otherChangeColourCallback(Widget *wid, void *data);
 void changeGridDimensionsCbk(Widget* wid, float val, void* data);
-
+void paletteChangeCallback(Widget* wid, void* data);
 
 #endif
