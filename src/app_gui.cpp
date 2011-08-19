@@ -63,7 +63,9 @@ void AppGui::build() {
 
 	SmallToolBar *brushSelector = new SmallToolBar(0,0, LEFT_TOOLBAR_WIDTH, NULL, "Choose symbol and colour to paint with");
 	brushSelector->addWidget(new SymbolsWidget(0,0, otherChangeSymbolCallback, &app->brush1.symbol));
-	brushSelector->addWidget(new ColourWidget(0,0,otherChangeColourCallback, &app->brush1));
+	brushSelector->addWidget(colourWidget = new ColourWidget(0,0,otherChangeColourCallback, &app->brush1));
+	colourWidget->setPaletteCallback(paletteChangeCallback, &app);
+	colourWidget->setPalette(app->palettes.get(app->currentPaletteIndex));
 
 	// File toolbar
 	SmallToolBar *file = new SmallToolBar(0, 0, LEFT_TOOLBAR_WIDTH, "File", "Perform file related operations");
@@ -694,4 +696,12 @@ void changeGridDimensionsCbk(Widget* wid, float val, void* data){
 	App* app = App::getSingleton();
 	app->gui->gwSlider->setValue(app->gridW);
 	app->gui->ghSlider->setValue(app->gridH);
+}
+
+void paletteChangeCallback(Widget* wid, void* data){
+	ColourWidget* colourWidget = (ColourWidget*)(wid);
+	App* app = App::getSingleton();
+	int dir = colourWidget->getPaletteChangeDirection();
+	app->currentPaletteIndex = (app->currentPaletteIndex + dir + app->palettes.size())%app->palettes.size();
+	colourWidget->setPalette(app->palettes.get(app->currentPaletteIndex));
 }

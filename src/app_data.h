@@ -12,6 +12,8 @@ class AppData : public AppUser {
 		void load();
 		void save();
 		
+		void loadPalettes();
+
 		void setFilename(char *name);
 
 		std::string filename;
