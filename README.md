@@ -1,4 +1,7 @@
-This is a fork of Ascii-Paint ( http://code.google.com/p/ascii-paint/ ), revamping the GUI and adding a number of features.
+Ascii-Paint
+===========
+
+This is a fork of Ascii-Paint ( http://code.google.com/p/ascii-paint/ ) which revamps the GUI and adds a number of new features.
 
 Introduction
 ============
@@ -73,87 +76,55 @@ Configuration
 Shortcuts
 ---------
 
-* _CTRL+N_ New
- 
-CTRL+O
- Open
- 
-CTRL+S
- Save
- 
-CTRL+Q
- Quit
- 
-CTRL+Z
- Undo
- 
-CTRL+Y Redo
- 
-CTRL+H Hide/Show mouse
- 
-TAB
- Hide/Show GUI
- 
-c
- Cell
- 
-l
- Line
- 
-r
- Rect
- 
-o
- Oval
- 
-f
- Fill
- 
-t
- Text
- 
-p
- Pick
- 
-Arrow Keys
- Move the mouse
- 
-Numpad
- Move the mouse
- 
-CTRL+Left Click
- Drag the canvas view
- 
-CTRL+Right Click
- Reset canvas view
- 
-ALT+ENTER
- Switch to Fullscreen/Windowed
- 
-SHIFT
- Draw straight line/square/circle
- 
-
+*  CTRL+N: New
+*  CTRL+O: Open
+*  CTRL+S: Save
+*  CTRL+Q: Quit
+*  CTRL+Z: Undo 
+*  CTRL+Y: Redo 
+*  CTRL+H: Hide/Show mouse
+*  CTRL+C: Copy 
+*  CTRL+V: Paste  
+*  TAB: Hide/Show GUI 
+*  c: Cell 
+*  l: Line 
+*  r: Rect 
+*  o: Oval 
+*  f: Fill 
+*  t: Text
+*  p: Pick 
+*  Arrow Keys: Move the mouse 
+*  Numpad: Move the mouse 
+*  CTRL+Left Click: Drag the canvas view 
+*  CTRL+Right Click: Reset canvas view 
+*  ALT+ENTER: Switch to Fullscreen/Windowed 
+*  SHIFT: Draw straight line/square/circle
 
 Color Selector
-You can open up the full screen color selector by clicking on a color box.
+--------------
+You can open up the full screen color selector by clicking on the 'C' in the palette.
 To select a color click on it.
 To change the saturation of the colors, right click a color from the gray colors.
 
-
 Export/Import
-You can import and export text, foreground and background colors. In addition you can also export the current image to bmp and png.
+-------------
+You can import and export text, foreground and background colors. In addition you can also export the current image to bmp, png, or as an animated gif.
 Importing and exporting text is done by .txt files.
 Foreground and background colors are .pngs where each pixel represents the foreground or background color of a cell in the image.
 
 FOV
+---
+_Currently the FOV functionality is disabled._
+
 FOV stands for Field Of View. FOV is used to see what someone standing at some point can see. ASCII-Paint currently offers 4 types of algorithms:
 (taken from libtcod docs)
 Basic : classic libtcod fov algorithm (ray casted from the player to all the cells on the submap perimeter)
 Diamond : based on this algorithm
 Shadow : based on this algorithm
-Permissive : based on this this algorithm 
+Permissive : based on this this algorithm
+ 
 Configuration
+-------------
 ASCII-Paint is configured using the ascii-paint.cfg file. Most of the options are quite obvious. In case you screw up the file, just copy ascii-paint.cfg.bak into ascii-paint.cfg.
 Colors are specified by "#RRGGBB" or "rrr, ggg, bbb".
 
@@ -167,12 +138,13 @@ For the font layout the following three options are available:
 The font type is either "greyscale" or "normal". "greyscale" means that gray pixels will be considered transparent. "normal" means all non-black pixels will be considered opaque.
 
 Extra tips
+----------
 During the middle of a drawing operation, press the opposite mouse button erases the drawing. eg if you are holding down the left mouse button while drawing a line and then press the right mouse button at the same time, then that line is erased. 
 
-
 Building
+========
 
-To build use cmake:
+To build ascii-paint, you can use cmake:
 
     mkdir build
     cd build
@@ -180,4 +152,4 @@ To build use cmake:
     make
     make install
 
-Then run from within bin/
+Then run ascii-paint.exe from within bin/
