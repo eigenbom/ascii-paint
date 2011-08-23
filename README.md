@@ -22,6 +22,7 @@ Features
 As of version 0.3.2 the following features are available:
 
 GUI
+
 *  GUI based interface with tooltips 
 *  Keyboard shortcuts 
 *  Palette color chooser 
@@ -34,6 +35,7 @@ GUI
 *  Grid
 
 Drawing
+
 *  Arbitrary sized canvases
 *  Draw single cells, lines, rectangles, ovals and text 
 *  Holding shift draws straight lines/squares/ovals 
@@ -48,6 +50,7 @@ Drawing
 *  Path finding tool
 
 File handling
+
 *  Opening and saving .asc files
 *  Opening and saving compressed files (files ending with a 'z') 
 *  Importing text, foreground and background colors 
@@ -55,6 +58,7 @@ File handling
 *  Exporting to animated .gif (the program dices up the canvas into frames)
 
 Configuration
+
 *  Configurable options (ascii-paint.cfg) 
 *  Palettes (palettes.cfg)
 *  Window size 
