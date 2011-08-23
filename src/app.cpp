@@ -52,7 +52,7 @@ int App::exec() {
 	quit = false;
 
 	TCODConsole::setCustomFont(fontFilename.c_str(), fontType | fontLayout);
-	TCODConsole::initRoot(windowWidth, windowHeight, "super ascii funtime program O_o", fullscreen);
+	TCODConsole::initRoot(windowWidth, windowHeight, "Ascii Paint v0.3.2", fullscreen);
 	TCODMouse::showCursor(true);
 	TCODSystem::setFps(fpsGoal);
 

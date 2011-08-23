@@ -5,7 +5,17 @@ ASCII-Paint Changelog:
 - Removed feature
 * Bugfix
 
-TODO:
+--- Changelog for eigenbom fork ---
+
+v0.3.2
++ Revamped GUI
++ Added Palettes (customisable via palettes.cfg)
++ Added export to animated .gif
++ Added grid overlay
++ Added Copy and Paste
+* Some minor bugfixes
+
+--- Old Changelog ---
 
 v0.3.1 - 22-04-10
 + Updated to use libtcod 1.5
