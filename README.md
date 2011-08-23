@@ -8,17 +8,12 @@ ASCII-Paint is a simple open source painting program which uses ASCII characters
 Quick Start
 -----------
 
-The program is quite self-explanatory though there are a few things that are not entirely obvious.
+The program is quite self-explanatory though there are a few things that are not entirely obvious:
 
-Left clicking draws with the primary brush, right clicking draws with the secondary brush
- 
-Press Tab to hide/show the GUI
- 
-When drawing text, type the text, click the position where you want to place it then press enter to confirm
- 
-Press CTRL+Left Click to drag the canvas
- 
-Saving a file ending with a 'z' makes a compressed file(eg. myfile.ascz, myfile.acz, myfile.gz)
+*  Press Tab to hide/show the GUI
+*  When drawing text, type the text, click the position where you want to place it then press enter to confirm
+*  Press CTRL+Left Click to drag the canvas
+*  Saving a file ending with a 'z' makes a compressed file(eg. myfile.ascz, myfile.acz, myfile.gz)
 
 Features
 -----------
