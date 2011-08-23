@@ -1,9 +1,12 @@
 This is a fork of Ascii-Paint ( http://code.google.com/p/ascii-paint/ ), revamping the GUI and adding a number of features.
 
-== Introduction
+Introduction
+============
 ASCII-Paint is a simple open source painting program which uses ASCII characters instead of pixels. It is made for roguelike developers but it can be used by anyone. It uses the excellent libtcod. 
 
-===Quick Start
+Quick Start
+-----------
+
 The program is quite self-explanatory though there are a few things that are not entirely obvious.
 
 Left clicking draws with the primary brush, right clicking draws with the secondary brush 
@@ -14,13 +17,14 @@ Saving a file ending with a 'z' makes a compressed file(eg. myfile.ascz, myfile.
 
 Also take a look at the color selector section
 
-=== Features
+Features
+-----------
 As of version 0.3.2 the following features are available:
 
-==== GUI
+GUI
 * GUI based interface with tooltips 
 * Keyboard shortcuts 
-* Palette based color chooser 
+* Palette color chooser 
 * Fullscreen color chooser 
 * Symbol chooser 
 * Fullscreen support 
@@ -30,46 +34,42 @@ As of version 0.3.2 the following features are available:
 * Grid
 
 Drawing
-Arbitrary sized canvases
-
-Draw single cells, lines, rectangles, ovals and text 
-Holding shift draws straight lines/squares/ovals 
-Flood filling 
-Color picker 
-Copy/Paste
-Undo/redo 
-Roguelike Tools (hidden for now)
-Cells can be solid
-
-Field of view tool
-
-4 FOV algorithms 
-Path finding tool
+* Arbitrary sized canvases
+* Draw single cells, lines, rectangles, ovals and text 
+* Holding shift draws straight lines/squares/ovals 
+* Flood filling 
+* Color picker 
+* Copy/Paste
+* Undo/redo 
+* Roguelike Tools
+* Cells can be solid
+* Field of view tool 
+* 4 FOV algorithms 
+* Path finding tool
 
 File handling
-Opening and saving .asc files
-
-Opening and saving compressed files (files ending with a 'z') 
-Importing text, foreground and background colors 
-Exporting .png, .bmp, text, foreground and background colors
+* Opening and saving .asc files
+* Opening and saving compressed files (files ending with a 'z') 
+* Importing text, foreground and background colors 
+* Exporting .png, .bmp, text, foreground and background colors
+* Exporting to animated .gif (the program dices up the canvas into frames)
 
 Configuration
-Configurable options (ascii-paint.cfg) 
-Window size 
-Full screen 
-Window Background color 
-FPS (frames per second)
-
-Font
-
-Canvas Size 
-Initial brush properties 
-GUI colors
+* Configurable options (ascii-paint.cfg) 
+* Palettes (palettes.cfg)
+* Window size 
+* Full screen 
+* Window Background color 
+* FPS (frames per second)
+* Font
+* Canvas Size 
+* Initial brush properties 
+* GUI colors
 
 Shortcuts
+---------
 
-CTRL+N
- New
+* _CTRL+N_ New
  
 CTRL+O
  Open
