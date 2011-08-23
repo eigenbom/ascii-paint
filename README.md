@@ -22,49 +22,49 @@ Features
 As of version 0.3.2 the following features are available:
 
 GUI
-* GUI based interface with tooltips 
-* Keyboard shortcuts 
-* Palette color chooser 
-* Fullscreen color chooser 
-* Symbol chooser 
-* Fullscreen support 
-* Hiding/Unhiding GUI (pressing TAB) 
-* Move mouse with keyboard (arrows and num pad) 
-* Image and solid view modes
-* Grid
+*  GUI based interface with tooltips 
+*  Keyboard shortcuts 
+*  Palette color chooser 
+*  Fullscreen color chooser 
+*  Symbol chooser 
+*  Fullscreen support 
+*  Hiding/Unhiding GUI (pressing TAB) 
+*  Move mouse with keyboard (arrows and num pad) 
+*  Image and solid view modes
+*  Grid
 
 Drawing
-* Arbitrary sized canvases
-* Draw single cells, lines, rectangles, ovals and text 
-* Holding shift draws straight lines/squares/ovals 
-* Flood filling 
-* Color picker 
-* Copy/Paste
-* Undo/redo 
-* Roguelike Tools
-* Cells can be solid
-* Field of view tool 
-* 4 FOV algorithms 
-* Path finding tool
+*  Arbitrary sized canvases
+*  Draw single cells, lines, rectangles, ovals and text 
+*  Holding shift draws straight lines/squares/ovals 
+*  Flood filling 
+*  Color picker 
+*  Copy/Paste
+*  Undo/redo 
+*  Roguelike Tools
+*  Cells can be solid
+*  Field of view tool 
+*  4 FOV algorithms 
+*  Path finding tool
 
 File handling
-* Opening and saving .asc files
-* Opening and saving compressed files (files ending with a 'z') 
-* Importing text, foreground and background colors 
-* Exporting .png, .bmp, text, foreground and background colors
-* Exporting to animated .gif (the program dices up the canvas into frames)
+*  Opening and saving .asc files
+*  Opening and saving compressed files (files ending with a 'z') 
+*  Importing text, foreground and background colors 
+*  Exporting .png, .bmp, text, foreground and background colors
+*  Exporting to animated .gif (the program dices up the canvas into frames)
 
 Configuration
-* Configurable options (ascii-paint.cfg) 
-* Palettes (palettes.cfg)
-* Window size 
-* Full screen 
-* Window Background color 
-* FPS (frames per second)
-* Font
-* Canvas Size 
-* Initial brush properties 
-* GUI colors
+*  Configurable options (ascii-paint.cfg) 
+*  Palettes (palettes.cfg)
+*  Window size 
+*  Full screen 
+*  Window Background color 
+*  FPS (frames per second)
+*  Font
+*  Canvas Size 
+*  Initial brush properties 
+*  GUI colors
 
 Shortcuts
 ---------
