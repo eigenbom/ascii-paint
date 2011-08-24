@@ -20,12 +20,12 @@ void ResizeOperation::start() {
 
 		// I intentionally add a space after width so that it aligns nicely with
 		// the height slider
-		Slider widthSlider(0, 0, 4, 1.0f, 1024.0f, "width ", "New width of the image");
+		Slider widthSlider(0, 0, 4, 1.0f, 2048.0f, "width ", "New width of the image");
 		widthSlider.setFormat("%.0f");
 		widthSlider.setSensitivity(0.2);
 		widthSlider.setValue(app->canvasWidth);
 
-		Slider heightSlider(0, 0, 4, 1.0f, 1024.0f, "height", "New height of the image");
+		Slider heightSlider(0, 0, 4, 1.0f, 2048.0f, "height", "New height of the image");
 		heightSlider.setFormat("%.0f");
 		heightSlider.setSensitivity(0.2);
 		heightSlider.setValue(app->canvasHeight);

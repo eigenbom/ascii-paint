@@ -32,12 +32,12 @@ void NewOperation::start() {
 
 		// I intentionally add a space after width so that it aligns nicely with
 		// the height slider
-		Slider widthSlider(0, 0, 4, 1.0f, 1024.0f, "width ", "Width of the new image");
+		Slider widthSlider(0, 0, 4, 1.0f, 2048.0f, "width ", "Width of the new image");
 		widthSlider.setFormat("%.0f");
 		widthSlider.setSensitivity(0.2);
 		widthSlider.setValue(app->canvasWidth);
 
-		Slider heightSlider(0, 0, 4, 1.0f, 1024.0f, "height", "Height of the new image");
+		Slider heightSlider(0, 0, 4, 1.0f, 2048.0f, "height", "Height of the new image");
 		heightSlider.setFormat("%.0f");
 		heightSlider.setSensitivity(0.2);
 		heightSlider.setValue(app->canvasHeight);
