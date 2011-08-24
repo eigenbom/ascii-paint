@@ -1,0 +1,15 @@
+// Image created by Ascii-Paint
+
+ascii_paint_image {
+	version = 1
+	int width = 40
+	int height = 40
+	string encoding = "base64"
+	string format = "crgb"
+	bool show_grid = true
+	int grid_width = 10
+	int grid_height = 20
+	struct layer {
+		string data = "..."
+	}
+}

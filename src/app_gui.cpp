@@ -74,7 +74,7 @@ void AppGui::build() {
 	file->addWidget(new LButton("Open", "Open a drawing [CTRL+O]", operationCbk, new OpenOperation));
 	file->addWidget(new LButton("Save", "Save current drawing [CTRL+S]", operationCbk, new SaveOperation));
 	file->addWidget(new LButton("Import", "Import files to this drawing", operationCbk, new ImportOperation));
-	file->addWidget(new LButton("Export", "Export this drawing as a .bmp file", operationCbk, new ExportOperation));
+	file->addWidget(new LButton("Export", "Export this drawing to one of a number of formats", operationCbk, new ExportOperation));
 	file->addWidget(new LButton("Quit", "Quit ASCII Paint [CTRL+Q]", operationCbk, new QuitOperation));
 
 	// Draw toolbar
