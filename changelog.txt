@@ -7,6 +7,11 @@ ASCII-Paint Changelog:
 
 --- Changelog for eigenbom fork ---
 
+v0.3.3
++ Added new file format, the Ascii Paint Format ".apf", which
+  will support future features of Ascii Paint, like layers.
+  The old .asc format is still supported, but not recommended. 
+
 v0.3.2
 + Revamped GUI
 + Added Palettes (customisable via palettes.cfg)
@@ -22,7 +27,7 @@ v0.3.1 - 22-04-10
 / Made brushes solid by default
 
 
-v0.3 To Be Released
+v0.3 
 + Added New, Open, Save and Quit dialogs
 + Canvases can be any size.
 + Added solid as a brush parameter
