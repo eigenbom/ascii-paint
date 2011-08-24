@@ -58,7 +58,34 @@ int App::exec() {
 
 	TCODConsole::root->setDefaultBackground(windowBackgroundColor);
 
-	// TCODConsole::credits();
+	/*
+	// Print credits here
+	int w = 30;
+	const char* credits = "%cDevs%c\n"
+			"2011- Ben Porter\n"
+			"2009-2010 Shafqat Bhuiyan & Jice\n"
+			"\n\n%cPress any key to skip...%c";
+
+	int h = TCODConsole::root->getHeightRect(0, 0, w, 20, credits);
+	int x = (windowWidth-w)/2;
+	int y = (windowHeight-h)/2;
+
+	TCODConsole::root->printFrame(x-1,y-1,w+2,h+20, true, TCOD_BKGND_DEFAULT, "Ascii Paint");
+
+	TCODConsole::setColorControl(TCOD_COLCTRL_1,TCODColor::red,TCODColor::black);
+	TCODConsole::setColorControl(TCOD_COLCTRL_2,TCODColor::darkRed,TCODColor::black);
+	TCODConsole::root->printRectEx(x,y,w,h, TCOD_BKGND_DEFAULT, TCOD_LEFT,
+			credits, TCOD_COLCTRL_1, TCOD_COLCTRL_STOP, TCOD_COLCTRL_2, TCOD_COLCTRL_STOP
+	);
+	bool finished = false;
+    while(!finished)
+    {
+    	finished = TCODConsole::renderCredits(x+w/2-10,y+10,false);
+		TCODConsole::root->flush();
+		key = TCODConsole::checkForKeypress();
+		if ( key.vk != TCODK_NONE ) break;
+    }
+    */
 
 	canvasCon = NULL;
 	solidCon = NULL;
