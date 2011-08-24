@@ -308,6 +308,8 @@ void App::changeOperation(Operation *newOperation) {
 
 	// Refresh mouse(might remove this later)
 	//mouse = TCODMouse::getStatus();
+	// TCODConsole::root->setDefaultBackground(gui->backgroundColor1);
+	// TCODConsole::root->setDefaultForeground(gui->foregroundColor1);
 
 	currentOperation = newOperation;
 	currentOperation->start();

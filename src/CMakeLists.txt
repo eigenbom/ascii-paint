@@ -4,6 +4,7 @@ ADD_EXECUTABLE(ascii-paint
     app_gui.cpp
     app_user.cpp
     asc_file.cpp
+    base64.cpp
     cell_operation.cpp
     color_box.cpp
     colour_widget.cpp
