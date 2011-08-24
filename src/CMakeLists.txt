@@ -1,4 +1,5 @@
 ADD_EXECUTABLE(ascii-paint
+	apf_file.cpp
     app.cpp
     app_data.cpp
     app_gui.cpp
@@ -40,11 +41,4 @@ ADD_EXECUTABLE(ascii-paint
 )
 
 target_link_libraries(ascii-paint tcod-mingw tcod-gui-mingw gd)
-
 INSTALL(TARGETS ascii-paint DESTINATION .)
-if(WIN32)
-	file(COPY ${BASE_DIR}/lib/libtcod-gui-mingw.dll 
-						${BASE_DIR}/lib/libtcod-mingw.dll 
-						${BASE_DIR}/lib/SDL.dll 
-			DESTINATION ${BASE_DIR}/bin)
-endif(WIN32)

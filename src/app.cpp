@@ -366,10 +366,14 @@ void App::setCanvasImage(CanvasImage& canvasImg) {
 void App::setGridDimensions(int w, int h){
 	gridW = w;
 	gridH = h;
+
+	gui->gwSlider->setValue(gridW);
+	gui->ghSlider->setValue(gridH);
 }
 
 void App::setShowGrid(bool on){
 	showGrid = on;
+	gui->viewGridToggleButton->setPressed(showGrid);
 }
 
 // Note: These undo methods might not be very effecient memory wise
