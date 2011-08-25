@@ -52,7 +52,7 @@ int App::exec() {
 	quit = false;
 
 	TCODConsole::setCustomFont(fontFilename.c_str(), fontType | fontLayout);
-	TCODConsole::initRoot(windowWidth, windowHeight, "Ascii Paint v0.3.2", fullscreen);
+	TCODConsole::initRoot(windowWidth, windowHeight, "Ascii Paint v0.3.2", fullscreen, TCOD_RENDERER_SDL);
 	TCODMouse::showCursor(true);
 	TCODSystem::setFps(fpsGoal);
 
@@ -177,10 +177,29 @@ int App::exec() {
         	showGrid = false;
 
 		if (showGrid){
+
+			if (gui->gridModeToggleButton->isPressed())
+				gridMode = GRID_MODE_BULLETS;
+			else
+				gridMode = GRID_MODE_CORNERS;
+
 			// draw grid points at the intersections
-			for(int x=canvasOffsetX;x<canvasOffsetX+canvasWidth;x+=gridW){
-				for(int y=canvasOffsetY;y<canvasOffsetY+canvasHeight;y+=gridH){
-					TCODConsole::root->putChar(x,y,TCOD_CHAR_BULLET, TCOD_BKGND_NONE);
+			int maxx = canvasOffsetX+canvasWidth, maxy = canvasOffsetY+canvasHeight;
+			for(int x=canvasOffsetX;x<maxx;x+=gridW){
+				for(int y=canvasOffsetY;y<maxy;y+=gridH){
+					// grid mode
+					if (gridMode==GRID_MODE_BULLETS){
+						TCODConsole::root->putChar(x,y,TCOD_CHAR_BULLET, TCOD_BKGND_NONE);
+					}
+					else {
+						TCODConsole::root->putChar(x,y,TCOD_CHAR_NW,TCOD_BKGND_NONE);
+						if (x+gridW-1<maxx)
+							TCODConsole::root->putChar(x+gridW-1,y,TCOD_CHAR_NE,TCOD_BKGND_NONE);
+						if (y+gridH-1<maxy)
+							TCODConsole::root->putChar(x,y+gridH-1,TCOD_CHAR_SW,TCOD_BKGND_NONE);
+						if (x+gridW-1<maxx and y+gridH-1<maxy)
+							TCODConsole::root->putChar(x+gridW-1,y+gridH-1,TCOD_CHAR_SE,TCOD_BKGND_NONE);
+					}
 				}
 			}
 		}

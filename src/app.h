@@ -17,6 +17,9 @@
 
 class Operation;
 
+#define GRID_MODE_BULLETS 0
+#define GRID_MODE_CORNERS 1
+
 // Basically a vector representing each cell in the canvas/image
 // To access the cell at position (x, y) use:
 // CanvasImage[x + y * width]
@@ -77,6 +80,7 @@ class App {
 		int fpsGoal;
 		int currentFps;
 
+		int gridMode; //
 		bool showGrid;
 		int gridW, gridH;
 

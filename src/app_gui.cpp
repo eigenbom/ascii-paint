@@ -375,6 +375,9 @@ void AppGui::build() {
 	viewGridToggleButton = new ToggleButton("Show", "Whether the grid should be shown", NULL, NULL);
 	viewGridToggleButton->setPressed(app->showGrid);
 
+	gridModeToggleButton = new ToggleButton("Mode","Change how the grid is displayed",NULL,NULL);
+	gridModeToggleButton->setPressed(app->gridMode==GRID_MODE_BULLETS);
+
 	// remove these from gui, but keep the logic as other parts depend on it
 	viewImageToggleButton = new ToggleButton("Image", "Whether the image should be viewed", NULL, NULL);
 	viewSolidToggleButton = new ToggleButton("Solid", "Whether the solid view should be enabled", NULL, NULL);
@@ -383,6 +386,7 @@ void AppGui::build() {
 	viewSolidToggleButton->setVisible(false);
 
 	view->addWidget(viewGridToggleButton);
+	view->addWidget(gridModeToggleButton);
 	// view->addWidget(viewSolidToggleButton);
 
 	gwSlider = new Slider2(0, 0, 3, 1.0f, 128.0f, "W", "Grid width");
@@ -398,6 +402,8 @@ void AppGui::build() {
 	ghSlider->setSensitivity(4);
 	ghSlider->setCallback(changeGridDimensionsCbk, &app->gridH);
 	view->addWidget(ghSlider);
+
+
 
 	vboxLeft->addWidget(brushSelector);
 
