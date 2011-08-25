@@ -76,12 +76,14 @@ bool doSave(App *app) {
 				return false;
 			} else {
 
-				MessageBox msgBox2("Warning", "Saving in .asc format is not recommended. Please use .apf instead. Continue anyway?", 2, false);
+				/*
+				MessageBox msgBox2("Warning", "The .asc format is old, consider saving in .apf format. Continue anyways?", 2, false);
 				msgBox2.show();
 
 				if(msgBox2.getButtonPressed() == 0 || msgBox2.getButtonPressed() == 2) {
 					return false;
 				}
+				*/
 				// else ... export
 
 				// If the filename ends with a z (for example test.ascz) then use the compressed format

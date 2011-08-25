@@ -17,6 +17,7 @@ v0.3.3
 * Full screen now works
 + Added changeable grid drawing mode (bullets and corners)
 * Fixed bad slider colouring in message box
+/ Changed initial foreground and background colours (blue,black)
 
 v0.3.2
 + Revamped GUI
