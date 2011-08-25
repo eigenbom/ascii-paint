@@ -147,6 +147,14 @@ void MessageBox::show() {
 		Widget::mouse = TCODMouse::getStatus();
 
 		frame->computeSize();
+		// put chars
+		for(int x=frame->x;x<frame->x+frame->w;x++){
+			for(int y=frame->y;y<frame->y+frame->h;y++){
+				TCODConsole::root->setCharForeground(x, y, Widget::fore);
+			}
+		}
+
+
 		frame->update(key);
 		frame->render();
 

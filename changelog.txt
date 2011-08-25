@@ -16,6 +16,7 @@ v0.3.3
 / Changed default renderer to SDL to fix full screen issue
 * Full screen now works
 + Added changeable grid drawing mode (bullets and corners)
+* Fixed bad slider colouring in message box
 
 v0.3.2
 + Revamped GUI
