@@ -186,7 +186,7 @@ bool ApfFile::Save(std::string filename){
 		uint32 riffSize = 0;
 
 			// APF_ header
-			putFourCC("APF ",fp);
+			putFourCC("apf ",fp);
 			riffSize += 4;
 
 				// settings
@@ -338,7 +338,7 @@ bool ApfFile::Load(std::string filename){
 		while(keepGoing and fp){ // for each subfield, try to find the APF_ field
 			uint32 apf;
 			if (not get32(&apf,fp)) break;
-			if (fourCCequals(apf,"APF ")){
+			if (fourCCequals(apf,"apf ") or fourCCequals(apf,"APF ")){
 				// Process APF segment
 				while(keepGoing and fp){
 					uint32 seg;
