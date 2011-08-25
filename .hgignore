@@ -6,5 +6,4 @@ build
 .project
 .svn
 ascii-paint-bpio.zip
-b\*.gif
-
+b\*

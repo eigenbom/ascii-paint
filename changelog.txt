@@ -10,7 +10,8 @@ ASCII-Paint Changelog:
 v0.3.3
 + Added new file format, the Ascii Paint Format ".apf", which
   will support future features of Ascii Paint, like layers.
-  The old .asc format is still supported, but not recommended. 
+  The old .asc format is still supported, but not recommended.
+  The .apf format is RIFF compatible.  
 
 v0.3.2
 + Revamped GUI
