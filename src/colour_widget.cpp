@@ -33,7 +33,7 @@ static const int MIN_WIDTH = 16;
 ColourWidget::ColourWidget(int x, int y,  widget_callback_t _cbk, void* _userData)
 :Widget(x,y,1+MIN_WIDTH,HEADER_HEIGHT + 2)
 ,sfore(),sback()
-,fx(0),fy(HEADER_HEIGHT),bx(1),by(HEADER_HEIGHT)
+,fx(1),fy(HEADER_HEIGHT),bx(0),by(HEADER_HEIGHT)
 ,cbk(_cbk),userData(_userData),palette(NULL),pChange(0)
 {
 	satRows = 1;
@@ -57,8 +57,8 @@ void ColourWidget::setPalette(Palette* p){
 	// update dimensions of widget
 	w = std::max(palette->width,MIN_WIDTH);
 	h = HEADER_HEIGHT + FOOTER_HEIGHT + palette->height;
-	fx = 0; fy = HEADER_HEIGHT;
-	bx = 1; by = HEADER_HEIGHT;
+	fx = 1; fy = HEADER_HEIGHT;
+	bx = 0; by = HEADER_HEIGHT;
 	sfore = getColourAt(fx,fy);
 	sback = getColourAt(bx,by);
 	if (cbk){

@@ -52,7 +52,7 @@ int App::exec() {
 	quit = false;
 
 	TCODConsole::setCustomFont(fontFilename.c_str(), fontType | fontLayout);
-	TCODConsole::initRoot(windowWidth, windowHeight, "Ascii Paint v0.3.2", fullscreen, TCOD_RENDERER_SDL);
+	TCODConsole::initRoot(windowWidth, windowHeight, "Ascii Paint v0.3.3", fullscreen, TCOD_RENDERER_SDL);
 	TCODMouse::showCursor(true);
 	TCODSystem::setFps(fpsGoal);
 
