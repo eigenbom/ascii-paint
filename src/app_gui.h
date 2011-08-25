@@ -98,6 +98,7 @@ class AppGui : public AppUser {
 		ToggleButton *viewImageToggleButton;
 		ToggleButton *viewSolidToggleButton;
 		ToggleButton *viewGridToggleButton;
+		ToggleButton *gridModeToggleButton;
 
 		// grid width/height
 		Slider *gwSlider;

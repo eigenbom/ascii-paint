@@ -12,6 +12,10 @@ v0.3.3
   will support future features of Ascii Paint, like layers.
   The old .asc format is still supported, but not recommended.
   The .apf format is RIFF compatible.  
+  TODO: Test it works on big-endian machines, and across two different endianness machines
+/ Changed default renderer to SDL to fix full screen issue
+* Full screen now works
++ Added changeable grid drawing mode (bullets and corners)
 
 v0.3.2
 + Revamped GUI

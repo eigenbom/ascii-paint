@@ -23,6 +23,7 @@ void AppData::load() {
 	windowTypeStruct->addProperty("fps", TCOD_TYPE_INT, true);
 
 	windowTypeStruct->addProperty("show_grid", TCOD_TYPE_BOOL, true);
+	windowTypeStruct->addProperty("grid_mode", TCOD_TYPE_STRING, true);
 	windowTypeStruct->addProperty("grid_width", TCOD_TYPE_INT, true);
 	windowTypeStruct->addProperty("grid_height", TCOD_TYPE_INT, true);
 
@@ -62,6 +63,12 @@ void AppData::load() {
 	app->showGrid = parser.getBoolProperty("window.show_grid");
 	app->gridW = parser.getIntProperty("window.grid_width");
 	app->gridH = parser.getIntProperty("window.grid_height");
+
+	if(strcmp(parser.getStringProperty("window.grid_mode"), "corners")==0) {
+		app->gridMode = GRID_MODE_CORNERS;
+	} else {
+		app->gridMode = GRID_MODE_BULLETS;
+	}
 
 	app->fontFilename = parser.getStringProperty("font.file");
 	if(!strcmp(parser.getStringProperty("font.layout"), "tcod")) {
@@ -116,6 +123,8 @@ void AppData::save() {
 		fprintf(fp, "\tfps = %i\n\n", app->fpsGoal);
 
 		fprintf(fp, "\tshow_grid = %s\n", app->showGrid? "true" : "false");
+		fprintf(fp, "\tgrid_mode = \"%s\" // either \"bullets\" or \"corners\"\n",
+				(app->gridMode==GRID_MODE_BULLETS)? "bullets" : "corners");
 		fprintf(fp, "\tgrid_width = %i\n", app->gridW);
 		fprintf(fp, "\tgrid_height = %i\n", app->gridH);
 

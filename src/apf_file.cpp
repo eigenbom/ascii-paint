@@ -8,8 +8,10 @@
 
 /*
  * An .apf file is a RIFF file with custom segments.
+ * Refer to apf_file.cpp for the read/write code for
+ * the latest version of the spec.
  *
- * RIFF resources:
+ * Additional  RIFF resources:
  * - http://en.wikipedia.org/wiki/Resource_Interchange_File_Format
  * - http://www.kk.iij4u.or.jp/~kondo/wave/mpidata.txt
  * - http://msdn.microsoft.com/en-us/library/ms713231
@@ -65,13 +67,7 @@ void fix(uint32& u){
 	u = l32(u);
 }
 
-//*********** RIFF data structures and helpers
-
-typedef struct {
-	uint32	ckID;	// Chunk type identifier
-	uint32	ckSize; // Chunk size field (size of ckData)
-	uint8	ckData[]; // Chunk data (sizeof ckSize)
-} Chunk;
+//*********** RIFF helpers
 
 uint32 fourCC(const char* c){
 	return (*(uint32*)c);
