@@ -45,6 +45,8 @@ class App {
 
 		void setCanvasImage(CanvasImage& canvasImg);
 		CanvasImage* getCanvasImage(std::string layerName="");
+		CanvasImage* getMergedCanvasImage();
+		TCODConsole* getMergedCanvasConsole();
 
 		void clearOverlay();
 		void applyBrushToOverlayCell(int x, int y, Brush *brush);
