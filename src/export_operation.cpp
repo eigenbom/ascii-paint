@@ -1,6 +1,7 @@
 #include <cstdio>
 #include <cstring>
 #include <cstdlib>
+#include <iostream>
 
 #include <gd.h> // libgd for gif export
 
@@ -52,8 +53,11 @@ void doExportPngCbk(Widget *wid, void *data) {
 	if(msgBox.getButtonPressed() == 1 && msgBox.getString() != NULL) {
 		std::string exportFilename = msgBox.getString();
 
-		TCODImage exportImg = TCODImage(app->canvasCon);
+		TCODConsole* canvasCon = app->getMergedCanvasConsole();
+		TCODImage exportImg = TCODImage(canvasCon);
+		exportImg.setKeyColor(app->keyColour);
 		exportImg.save(exportFilename.c_str());
+		delete canvasCon;
 	}
 
 }
@@ -78,8 +82,11 @@ void doExportBmpCbk(Widget *wid, void *data) {
 	if(msgBox.getButtonPressed() == 1 && msgBox.getString() != NULL) {
 		std::string exportFilename = msgBox.getString();
 
-		TCODImage exportImg = TCODImage(app->canvasCon);
+		TCODConsole* canvasCon = app->getMergedCanvasConsole();
+		TCODImage exportImg = TCODImage(canvasCon);
+		exportImg.setKeyColor(app->keyColour);
 		exportImg.save(exportFilename.c_str());
+		delete canvasCon;
 	}
 
 }
@@ -133,8 +140,10 @@ void doExportGifCbk(Widget *wid, void *data) {
 		std::string exportFilename = msgBox.getString();
 
 		// render entire canvas to an image
-		TCODImage exportImg = TCODImage(app->canvasCon);
+		TCODConsole* canvasCon = app->getMergedCanvasConsole();
+		TCODImage exportImg = TCODImage(canvasCon);
 		int width, height;
+		exportImg.setKeyColor(app->keyColour);
 		exportImg.getSize(&width,&height);
 
 		// get dimension, number of frames, delay, etc...
@@ -166,9 +175,16 @@ void doExportGifCbk(Widget *wid, void *data) {
 
 		// white = gdImageColorAllocate(im, 255, 255, 255);
 		// black = gdImageColorAllocate(im, 0, 0, 0);
-		gdImagePtr imP = gdImageCreatePaletteFromTrueColor (im, 0, 256);
-		gdImagePtr prevP = gdImageCreatePaletteFromTrueColor (im, 0, 256);
-		gdImageGifAnimBegin(imP, out, 1, 0);
+		//gdImagePtr imP = gdImageCreatePaletteFromTrueColor (im, 0, 256);
+		//gdImagePtr prevP = gdImageCreatePaletteFromTrueColor (im, 0, 256);
+
+		// gdImageGifAnimBegin(imP, out, 1, 0);
+		prev = im;
+
+
+		TCODColor key = app->keyColour;
+
+		gdImageGifAnimBegin(im, out, 1, 0);
 
 		for(i = 0; i < spriteNum; i++) {
 			// compute coordinates of sprite
@@ -179,32 +195,55 @@ void doExportGifCbk(Widget *wid, void *data) {
 
 			int r,g,b;
 			im = gdImageCreateTrueColor(spriteWidth, spriteHeight);
+			// gdImageSaveAlpha (im, 1);
+
+			// int col = gdImageColorAllocateAlpha(im,key.r,key.g,key.b,127);
+			// gdImageColorTransparent(im, col);
+
+			//gdImageRectangle (im, 0, 0, spriteWidth, spriteHeight,
+			//		gdTrueColorAlpha(255,0,255,127));
+
+			// gdImageColorTransparent(im, gdTrueColor(key.r,key.g,key.b));
+
 			//white = gdImageColorAllocate(im, 255, 255, 255);
 			//black = gdImageColorAllocate(im, 0, 0, 0);
 
 			for(int x=dx;x<dx+spriteWidth;x++){
 				for(int y=dy;y<dy+spriteHeight;y++){
-					TCODColor col = exportImg.getPixel(x,y);
+					TCODColor colour = exportImg.getPixel(x,y);
 					// int c = gdImageColorAllocate(im,col.r,col.g,col.b);
 					//gdImageSetPixel(im,x-dx,y-dy,x%2==0?
 					//		gdTrueColor(255,255,255):gdTrueColor(0,0,0));
-					gdImageSetPixel(im,x-dx,y-dy,gdTrueColor(col.r,col.g,col.b));
+
+					/*
+					if (colour==app->keyColour){
+						// gdImageSetPixel(im,x-dx,y-dy,col); // gdTrueColorAlpha(col.r,col.g,col.b,127));
+						// gdTrueColorAlpha(colour.r,colour.g,colour.b,0)
+
+						//gdImageSetPixel(im,x-dx,y-dy,gdTrueColorAlpha(colour.r,colour.g,colour.b,127));
+					}
+					else
+						*/
+
+					gdImageSetPixel(im,x-dx,y-dy,gdTrueColor(colour.r,colour.g,colour.b));
 				}
 			}
 
-			prevP = imP;
-			imP = gdImageCreatePaletteFromTrueColor (im, 0, 256);
+			//prevP = imP;
+			//imP = gdImageCreatePaletteFromTrueColor (im, 0, 256);
 
-			gdImageGifAnimAdd(imP, out, 1, 0, 0, spriteDelay, 1, prevP);
+			// gdImageGifAnimAdd(imP, out, 1, 0, 0, spriteDelay, 1, prevP);
+			gdImageGifAnimAdd(im, out, 1, 0, 0, spriteDelay, 1, prev);
 			if(prev) {
 				gdImageDestroy(prev);
-				gdImageDestroy(prevP);
+				//gdImageDestroy(prevP);
 			}
 			prev = im;
 		}
 
 		gdImageGifAnimEnd(out);
 		fclose(out);
+		delete canvasCon;
 	}
 }
 

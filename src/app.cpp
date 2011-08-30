@@ -388,6 +388,53 @@ CanvasImage* App::getCanvasImage(std::string layerName) {
 
 }
 
+CanvasImage* App::getMergedCanvasImage(){
+	Layer* layer = currentLayer;
+	if (layer==NULL || canvasCon==NULL){
+		std::cerr << "Layer or Canvas is NULL, yet calling getMergedCanvasImage!\n";
+		assert(true);
+	}
+
+	TCODConsole* con = getMergedCanvasConsole();
+	CanvasImage* canvasImg = new CanvasImage;
+	Brush brush;
+
+	for(int x = 0; x < canvasWidth; x++) {
+		for(int y = 0; y < canvasHeight; y++) {
+			brush.symbol = con->getChar(x, y);
+			brush.fore = con->getCharForeground(x, y);
+			brush.back = con->getCharBackground(x, y);
+			brush.solid = true;
+			canvasImg->push_back(brush);
+		}
+	}
+
+	delete con;
+	return canvasImg;
+}
+
+TCODConsole* App::getMergedCanvasConsole(){
+	Layer* layer = currentLayer;
+	if (layer==NULL || canvasCon==NULL){
+		std::cerr << "Layer or Canvas is NULL. Creating junk console.\n";
+		return new TCODConsole(canvasWidth,canvasHeight);
+	}
+
+	TCODConsole* con = new TCODConsole(canvasWidth,canvasHeight);
+	con->setDefaultForeground(brush1.fore);
+	con->setDefaultBackground(keyColour);
+	con->setKeyColor(keyColour);
+	con->clear();
+
+	for(int i=0;i<layers.size();i++){
+		Layer* l = layers.get(i);
+
+		if (l->visible)
+			TCODConsole::blit(l->canvasCon, 0, 0, canvasWidth, canvasHeight, con, 0, 0, l->fgalpha/255.,l->bgalpha/255.);
+	}
+	return con;
+}
+
 void App::setCanvasImage(CanvasImage& canvasImg) {
 	DEBUG_FILE_AND_LINE
 
