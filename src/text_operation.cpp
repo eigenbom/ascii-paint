@@ -79,12 +79,14 @@ void TextOperation::update() {
 			else
 				app->overlayCon->setCharBackground(textX + i, textY, app->canvasCon->getCharBackground(textX + i, textY));
 
+			/*
 			if(app->gui->useSolidToggleButton->isPressed()) {
 				if(brush->solid)
 					app->solidOverlayCon->setCharBackground(textX + i, textY, TCODColor(0, 0, 255));
 				else
 					app->solidOverlayCon->setCharBackground(textX + i, textY, TCODColor(255, 255, 255));
 			}
+			*/
 		}
 	}
 }

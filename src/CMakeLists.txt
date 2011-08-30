@@ -15,6 +15,7 @@ ADD_EXECUTABLE(ascii-paint
     fov_operation.cpp
     get_string_message_box.cpp
     import_operation.cpp
+    layer_widget.cpp
     lbutton.cpp
     line_operation.cpp
     lradio_button.cpp
@@ -34,6 +35,7 @@ ADD_EXECUTABLE(ascii-paint
     resize_operation.cpp
     save_operation.cpp
     slider2.cpp
+    small_button.cpp
     small_toolbar.cpp
     symbols_widget.cpp
     text_operation.cpp

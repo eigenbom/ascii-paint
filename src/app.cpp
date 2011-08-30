@@ -1,6 +1,10 @@
 #include <cstdio>
 #include <string>
 #include <sstream>
+#include <cstdlib>
+#include <iostream>
+#include <cassert>
+
 #include "libtcod.hpp"
 #include "gui/gui.hpp"
 
@@ -52,7 +56,7 @@ int App::exec() {
 	quit = false;
 
 	TCODConsole::setCustomFont(fontFilename.c_str(), fontType | fontLayout);
-	TCODConsole::initRoot(windowWidth, windowHeight, "Ascii Paint v0.3.3", fullscreen, TCOD_RENDERER_SDL);
+	TCODConsole::initRoot(windowWidth, windowHeight, "Ascii Paint v0.4", fullscreen, TCOD_RENDERER_SDL);
 	TCODMouse::showCursor(true);
 	TCODSystem::setFps(fpsGoal);
 
@@ -88,9 +92,9 @@ int App::exec() {
     */
 
 	canvasCon = NULL;
-	solidCon = NULL;
+	//solidCon = NULL;
 	overlayCon = NULL;
-	solidOverlayCon = NULL;
+	//solidOverlayCon = NULL;
 
 	// grid defaults loaded using cfg file
 	/*
@@ -132,7 +136,7 @@ int App::exec() {
 		handleCanvasDragging();
 
 		TCODConsole::root->setDefaultBackground(windowBackgroundColor);
-		TCODConsole::root->setDefaultForeground(TCODColor::darkGrey);
+		TCODConsole::root->setDefaultForeground(TCODColor::black);
 		TCODConsole::root->clear();
 		/*
 		for(int i=0;i<windowWidth;i++){
@@ -165,11 +169,37 @@ int App::exec() {
 		blitWidth = min(canvasWidth - blitSrcX, windowWidth - blitDestX);
 		blitHeight = min(canvasHeight - blitSrcY, windowHeight - blitDestY);
 
-		if(gui->viewImageToggleButton->isPressed())
-                        TCODConsole::blit(canvasCon, blitSrcX, blitSrcY, blitWidth, blitHeight, TCODConsole::root, blitDestX, blitDestY);
-		if(gui->viewSolidToggleButton->isPressed())
-                        TCODConsole::blit(solidCon, blitSrcX, blitSrcY, blitWidth, blitHeight, TCODConsole::root, blitDestX, blitDestY, 0.5, 0.5);
-        TCODConsole::blit(overlayCon, blitSrcX, blitSrcY, blitWidth, blitHeight, TCODConsole::root, blitDestX, blitDestY, overlayFade, overlayFade);
+		// Draw the layers
+
+		// Draw the underneath pattern
+		for(int x=blitDestX;x<blitDestX+blitWidth;x++){
+			for(int y=blitDestY;y<blitDestY+blitHeight;y++){
+				int dx = x-blitDestX;
+				int dy = y-blitDestY;
+				TCODConsole::root->putCharEx(x,y,0,
+						(dx+dy)%2==0?TCODColor::grey:TCODColor::darkGrey,
+						(dx+dy)%2==0?TCODColor::grey:TCODColor::darkGrey);
+			}
+		}
+
+		// And draw the overlay at the correct depth
+		for(int i=0;i<layers.size();i++){
+			Layer* l = layers.get(i);
+
+			if (l->visible)
+				TCODConsole::blit(l->canvasCon, blitSrcX, blitSrcY, blitWidth, blitHeight, TCODConsole::root, blitDestX, blitDestY, l->fgalpha/255.,l->bgalpha/255.);
+
+			if (currentLayer==l){
+				TCODConsole::blit(overlayCon, blitSrcX, blitSrcY, blitWidth, blitHeight, TCODConsole::root, blitDestX, blitDestY, overlayFade, overlayFade);
+			}
+		}
+
+		//if(gui->viewImageToggleButton->isPressed())
+		//	TCODConsole::blit(canvasCon, blitSrcX, blitSrcY, blitWidth, blitHeight, TCODConsole::root, blitDestX, blitDestY);
+		// Solid view deprecated
+		// if(gui->viewSolidToggleButton->isPressed())
+        // TCODConsole::blit(solidCon, blitSrcX, blitSrcY, blitWidth, blitHeight, TCODConsole::root, blitDestX, blitDestY, 0.5, 0.5);
+        // TCODConsole::blit(overlayCon, blitSrcX, blitSrcY, blitWidth, blitHeight, TCODConsole::root, blitDestX, blitDestY, overlayFade, overlayFade);
 
         if (gui->viewGridToggleButton->isPressed())
         	showGrid = true;
@@ -242,18 +272,30 @@ void App::initBrushes() {
 }
 
 	void App::initCanvas() {
-		if(canvasCon != NULL)
-			delete canvasCon;
+		if (layers.size()>0){
+			for(int i=0;i<layers.size();i++){
+				Layer* l = layers.get(i);
+				delete l->canvasCon;
+				delete l;
+			}
+			layers.isEmpty();
+		}
 
-		if(solidCon != NULL)
-			delete solidCon;
+		Layer* l = addNewLayer();
+
+		//if(canvasCon != NULL)
+		//	delete canvasCon;
+
+		//if(solidCon != NULL)
+		//	delete solidCon;
 
 		if(overlayCon != NULL)
 			delete overlayCon;
 
-		if(solidOverlayCon != NULL)
-			delete solidOverlayCon;
+		//if(solidOverlayCon != NULL)
+		//	delete solidOverlayCon;
 
+		/*
 		canvasCon = new TCODConsole(canvasWidth, canvasHeight);
 		canvasCon->setDefaultForeground(brush1.fore);
 		canvasCon->setDefaultBackground(brush1.back);
@@ -263,17 +305,21 @@ void App::initBrushes() {
 		solidCon->setDefaultForeground(TCODColor(0, 0, 0));
 		solidCon->setDefaultBackground(TCODColor(255, 255, 255));
 		solidCon->clear();
+		*/
 
 		overlayCon = new TCODConsole(canvasWidth, canvasHeight);
 		overlayCon->setDefaultBackground(TCODColor(1, 2, 3)); // 1,2,3 is an uncommon color ;)
 		overlayCon->setKeyColor(TCODColor(1, 2, 3));
 		overlayCon->clear();
 
+		/*
 		solidOverlayCon = new TCODConsole(canvasWidth, canvasHeight);
 		solidOverlayCon->setDefaultBackground(TCODColor(1, 2, 3));
 		solidOverlayCon->setKeyColor(TCODColor(1, 2, 3));
 		solidOverlayCon->clear();
+		*/
 
+		/*
 		for(int x = 0; x < canvasWidth; x++) {
 			for(int y = 0; y < canvasHeight; y++) {
 				canvasCon->setChar(x, y, ' ');
@@ -281,6 +327,7 @@ void App::initBrushes() {
 				canvasCon->setCharBackground(x, y, brush1.back);
 			}
 		}
+		*/
 		canvasModified = false;
 		isCanvasBeingDragged = false;
 
@@ -307,14 +354,23 @@ void App::resizeCanvas(int newWidth, int newHeight){
 	canvasWidth = newWidth;
 	canvasHeight = newHeight;
 
-	TCODConsole* newCanvasCon = new TCODConsole(newWidth, newHeight);
-	newCanvasCon->setDefaultForeground(brush1.fore);
-	newCanvasCon->setDefaultBackground(brush1.back);
-	newCanvasCon->clear();
-	TCODConsole::blit(canvasCon,0,0,copyW,copyH,newCanvasCon,0,0);
-	delete canvasCon;
-	canvasCon = newCanvasCon;
+	// resize all layers
+	for(int i=0;i<layers.size();i++){
+		Layer* l = layers.get(i);
 
+		TCODConsole* newCanvasCon = new TCODConsole(newWidth, newHeight);
+		newCanvasCon->setDefaultForeground(brush1.fore);
+		newCanvasCon->setDefaultBackground(keyColour); // brush1.back);
+		newCanvasCon->setKeyColor(keyColour); // brush1.back);
+		newCanvasCon->clear();
+		TCODConsole::blit(l->canvasCon,0,0,copyW,copyH,newCanvasCon,0,0);
+		delete l->canvasCon;
+		l->canvasCon = newCanvasCon;
+	}
+	if (currentLayer!=NULL)
+		canvasCon = currentLayer->canvasCon;
+
+	/*
 	TCODConsole* newSolidCon = new TCODConsole(newWidth, newHeight);
 	newSolidCon->setDefaultForeground(TCODColor(0, 0, 0));
 	newSolidCon->setDefaultBackground(TCODColor(255, 255, 255));
@@ -322,6 +378,7 @@ void App::resizeCanvas(int newWidth, int newHeight){
 	TCODConsole::blit(solidCon,0,0,copyW,copyH,newSolidCon,0,0);
 	delete solidCon;
 	solidCon = newSolidCon;
+	*/
 
 	TCODConsole* newOverlayCon = new TCODConsole(newWidth, newHeight);
 	newOverlayCon->setDefaultBackground(TCODColor(1, 2, 3)); // 1,2,3 is an uncommon color ;)
@@ -331,6 +388,7 @@ void App::resizeCanvas(int newWidth, int newHeight){
 	delete overlayCon;
 	overlayCon = newOverlayCon;
 
+	/*
 	TCODConsole* newSolidOverlayCon = new TCODConsole(newWidth, newHeight);
 	newSolidOverlayCon->setDefaultBackground(TCODColor(1, 2, 3));
 	newSolidOverlayCon->setKeyColor(TCODColor(1, 2, 3));
@@ -338,6 +396,7 @@ void App::resizeCanvas(int newWidth, int newHeight){
 	TCODConsole::blit(solidOverlayCon,0,0,copyW,copyH,newSolidOverlayCon,0,0);
 	delete solidOverlayCon;
 	solidOverlayCon = newSolidOverlayCon;
+	*/
 
 	// resetCanvasView();
 }
@@ -361,18 +420,20 @@ void App::changeOperation(Operation *newOperation) {
 	currentOperation->start();
 }
 
-	bool App::shouldOperationUpdate() {
-		if(TCODConsole::isKeyPressed(TCODK_CONTROL))
-			return false;
-		if(gui->hideType == AppGui::TOTAL_HIDE)
-			return true;
-		if(Widget::focus && !currentOperation->isActive())
-			return false;
+bool App::shouldOperationUpdate() {
+	if(TCODConsole::isKeyPressed(TCODK_CONTROL))
+		return false;
+	if(gui->hideType == AppGui::TOTAL_HIDE)
 		return true;
-	}
+	if(Widget::focus && !currentOperation->isActive())
+		return false;
+	return true;
+}
 
 
 CanvasImage* App::getCanvasImage() {
+	assert(canvasCon!=NULL and "Canvas is NULL, yet calling getCanvasImage!");
+
 	CanvasImage* canvasImg = new CanvasImage;
 	Brush brush;
 
@@ -381,10 +442,13 @@ CanvasImage* App::getCanvasImage() {
 			brush.symbol = canvasCon->getChar(x, y);
 			brush.fore = canvasCon->getCharForeground(x, y);
 			brush.back = canvasCon->getCharBackground(x, y);
+			brush.solid = true;
+			/*
 			if(solidCon->getCharBackground(x, y) == TCODColor(0, 0, 255))
 				brush.solid = true;
 			else
 				brush.solid = false;
+				*/
 
 			canvasImg->push_back(brush);
 		}
@@ -395,18 +459,191 @@ CanvasImage* App::getCanvasImage() {
 }
 
 void App::setCanvasImage(CanvasImage& canvasImg) {
+	assert(canvasCon!=NULL and "Canvas is NULL, yet calling setCanvasImage!");
+
 	for(int x = 0; x < canvasWidth; x++) {
 		for(int y = 0; y < canvasHeight; y++) {
 			canvasCon->setChar(x, y, canvasImg[x * canvasHeight + y].symbol);
 			canvasCon->setCharForeground(x, y, canvasImg[x * canvasHeight + y].fore);
 			canvasCon->setCharBackground(x, y, canvasImg[x * canvasHeight + y].back);
+
+			/*
 			if(canvasImg[x * canvasHeight + y].solid)
 				solidCon->setCharBackground(x, y, TCODColor(0, 0, 255));
 			else
 				solidCon->setCharBackground(x, y, TCODColor(255, 255, 255));
+			*/
 		}
 	}
 
+}
+
+// layer operations
+/// \brief Add a new layer to the top.
+/// Generated layer is returned and selected.
+Layer* App::addNewLayer(){
+	Layer* l = new Layer;
+	l->name = generateUniqueLayerName();
+	l->fgalpha = 255; // 255;
+	l->bgalpha = 255; // 255;
+	l->compositingMode = Normal;
+	l->visible = true;
+	l->canvasCon = new TCODConsole(canvasWidth, canvasHeight);
+	l->canvasCon->setDefaultForeground(brush1.fore);
+	l->canvasCon->setDefaultBackground(keyColour);
+	l->canvasCon->setKeyColor(keyColour);
+	l->canvasCon->clear();
+
+	currentLayer = l;
+	canvasCon = l->canvasCon;
+
+	layers.push(l);
+	return l;
+}
+
+/// \brief Delete a named layer.
+void App::deleteLayer(std::string name){
+	for(int i=0;i<layers.size();i++){
+		if (layers.get(i)->name==name){
+			Layer* l = layers.get(i);
+			layers.remove(l);
+			if (currentLayer==l){
+				if (layers.isEmpty()){
+					currentLayer = NULL;
+					canvasCon = NULL;
+				}
+				else {
+					selectLayer(layers.get(0)->name);
+				}
+			}
+			delete l;
+			return;
+		}
+	}
+}
+
+/// Select the named layer
+void App::selectLayer(std::string name){
+	for(int i=0;i<layers.size();i++){
+		if (layers.get(i)->name==name){
+			currentLayer = layers.get(i);
+			canvasCon = currentLayer->canvasCon;
+			return;
+		}
+	}
+
+	// errrrror!
+	std::cerr << "Error: Trying to select non-existent layer!\nContinuing...\n";
+}
+
+Layer* App::getCurrentLayer(){
+	return currentLayer;
+}
+
+const TCODList<Layer*>& App::getLayers(){
+	return layers;
+}
+
+void App::shiftCurrentLayerUp(){
+	if (currentLayer==NULL) return;
+	// else
+
+	// get index
+	int index = -1;
+	for(int i=0;i<layers.size();i++)
+	{
+		if (layers.get(i)==currentLayer){
+			index = i;
+			break;
+		}
+	}
+	if (index==-1 || index==layers.size()-1) return;
+
+	// else
+	layers.remove(currentLayer);
+	layers.insertBefore(currentLayer,index+1);
+}
+
+void App::shiftCurrentLayerDown(){
+	if (currentLayer==NULL) return;
+	// else
+
+	// get index
+	int index = -1;
+	for(int i=0;i<layers.size();i++)
+	{
+		if (layers.get(i)==currentLayer){
+			index = i;
+			break;
+		}
+	}
+	if (index==-1 || index==0) return;
+
+	// else
+	layers.remove(currentLayer);
+	layers.insertBefore(currentLayer,index-1);
+}
+
+std::string App::generateUniqueLayerName(){
+	for(char c1='A';c1<='Z';c1++)
+		for(char c2='A';c2<='Z';c2++)
+			for(char c3='A';c3<='Z';c3++)
+				for(char c4='A';c4<='Z';c4++)
+				{
+					const char n[] = {c1,c2,c3,c4,'\0'};
+					std::string name = n;
+					bool taken = false;
+					// start at AAAA and go to ZZZZ
+					for(int i=0;i<layers.size();i++){
+						Layer* l = layers.get(i);
+						if (l->name == name) {
+							taken = true;
+							break;
+						}
+					}
+
+					if (not taken){
+						return name;
+					}
+				}
+	// impossible
+	assert(true and "Something impossible happened when generating unique layer names");
+}
+
+std::string App::modifyLayerNameToBeUnique(std::string name){
+	// modify from the last character back
+	for(char c1='1'-1;c1<='9';c1++)
+			for(char c2='1'-1;c2<='9';c2++)
+				for(char c3='1'-1;c3<='9';c3++)
+					for(char c4='1'-1;c4<='9';c4++)
+					{
+						if (c1=='1'-1){
+
+						}
+
+						const char n[] = {
+								(c1=='1'-1)?name[0]:c1,
+								(c2=='1'-1)?name[1]:c2,
+								(c3=='1'-1)?name[2]:c3,
+								(c4=='1'-1)?name[3]:c4,
+								'\0'};
+						std::string newname = n;
+						bool taken = false;
+						// start at AAAA and go to ZZZZ
+						for(int i=0;i<layers.size();i++){
+							Layer* l = layers.get(i);
+							if (l->name == newname) {
+								taken = true;
+								break;
+							}
+						}
+
+						if (not taken){
+							return newname;
+						}
+					}
+	// impossible
+	assert(true and "Something impossible happened when modifying a layer name");
 }
 
 void App::setGridDimensions(int w, int h){
@@ -425,6 +662,8 @@ void App::setShowGrid(bool on){
 // Note: These undo methods might not be very effecient memory wise
 // need to look at the possible solutions later...
 void App::addUndo() {
+	if (canvasCon==NULL) return;
+
 	canvasModified = true;
 	pastImages.push_back(*getCanvasImage());
 	// Clear the redo list. However not doing this can be helpful at times.
@@ -433,6 +672,8 @@ void App::addUndo() {
 }
 
 void App::doUndo() {
+	if (canvasCon==NULL) return;
+
 	if(pastImages.size() > 0) {
 		futureImages.push_back(*getCanvasImage());
 		setCanvasImage(pastImages[pastImages.size() - 1]);
@@ -441,6 +682,8 @@ void App::doUndo() {
 }
 
 void App::doRedo() {
+	if (canvasCon==NULL) return;
+
 	if(futureImages.size() > 0) {
 		pastImages.push_back(*getCanvasImage());
 		setCanvasImage(futureImages[futureImages.size() - 1]);
@@ -450,6 +693,7 @@ void App::doRedo() {
 
 
 void App::copyCanvasToClipboard(int x, int y, int w, int h){
+	if (canvasCon==NULL) return;
 	clipboardImage.clear();
 	Brush brush;
 
@@ -460,10 +704,13 @@ void App::copyCanvasToClipboard(int x, int y, int w, int h){
 			brush.symbol = canvasCon->getChar(x+dx, y+dy);
 			brush.fore = canvasCon->getCharForeground(x+dx, y+dy);
 			brush.back = canvasCon->getCharBackground(x+dx, y+dy);
+			brush.solid = true;
+			/*
 			if(solidCon->getCharBackground(x+dx, y+dy) == TCODColor(0, 0, 255))
 				brush.solid = true;
 			else
 				brush.solid = false;
+			*/
 
 			clipboardImage.push_back(brush);
 		}
@@ -478,15 +725,18 @@ void App::applyClipboardToOverlay(int x, int y){
 			overlayCon->setChar(x+dx, y+dy, clipboardImage[dx * clipboardHeight + dy].symbol);
 			overlayCon->setCharForeground(x+dx, y+dy, clipboardImage[dx * clipboardHeight + dy].fore);
 			overlayCon->setCharBackground(x+dx, y+dy, clipboardImage[dx * clipboardHeight + dy].back);
+			/*
 			if(clipboardImage[dx * clipboardHeight + dy].solid)
 				solidOverlayCon->setCharBackground(x+dx, y+dy, TCODColor(0, 0, 255));
 			else
 				solidOverlayCon->setCharBackground(x+dx, y+dy, TCODColor(255, 255, 255));
+				*/
 		}
 	}
 }
 
 void App::applyClipboardToCanvas(int x, int y){
+	if (canvasCon==NULL) return;
 	if (clipboardImage.empty()) return;
 
 	for(int dx = 0; dx < clipboardWidth; dx++) {
@@ -494,10 +744,12 @@ void App::applyClipboardToCanvas(int x, int y){
 			canvasCon->setChar(x+dx, y+dy, clipboardImage[dx * clipboardHeight + dy].symbol);
 			canvasCon->setCharForeground(x+dx, y+dy, clipboardImage[dx * clipboardHeight + dy].fore);
 			canvasCon->setCharBackground(x+dx, y+dy, clipboardImage[dx * clipboardHeight + dy].back);
+			/*
 			if(clipboardImage[dx * clipboardHeight + dy].solid)
 				solidCon->setCharBackground(x+dx, y+dy, TCODColor(0, 0, 255));
 			else
 				solidCon->setCharBackground(x+dx, y+dy, TCODColor(255, 255, 255));
+			*/
 		}
 	}
 }
@@ -507,45 +759,53 @@ void App::applyClipboardToCanvas(int x, int y){
 // then it will not apply that part of the brush to the console but instead
 // leave that part (symbol, fore or back) the way it is
 	void App::applyBrushToOverlayCell(int x, int y, Brush *brush) {
-                if(gui->useSymbolToggleButton->isPressed())
-                        overlayCon->setChar(x, y, brush->symbol);
-                else
-                        overlayCon->setChar(x, y, canvasCon->getChar(x, y));
+		if(gui->useSymbolToggleButton->isPressed())
+				overlayCon->setChar(x, y, brush->symbol);
+		else
+				overlayCon->setChar(x, y, canvasCon->getChar(x, y));
 
-                if(gui->useForegroundToggleButton->isPressed())
-                        overlayCon->setCharForeground(x, y, brush->fore);
-                else
-                        overlayCon->setCharForeground(x, y, canvasCon->getCharForeground(x, y));
+		if(gui->useForegroundToggleButton->isPressed())
+				overlayCon->setCharForeground(x, y, brush->fore);
+		else
+				overlayCon->setCharForeground(x, y, canvasCon->getCharForeground(x, y));
 
-                if(gui->useBackgroundToggleButton->isPressed())
-                        overlayCon->setCharBackground(x, y, brush->back);
-                else
-                        overlayCon->setCharBackground(x, y, canvasCon->getCharBackground(x, y));
+		if(gui->useBackgroundToggleButton->isPressed())
+				overlayCon->setCharBackground(x, y, brush->back);
+		else
+				overlayCon->setCharBackground(x, y, canvasCon->getCharBackground(x, y));
 
-                if(gui->useSolidToggleButton->isPressed()) {
-                        if(brush->solid)
-                                solidOverlayCon->setCharBackground(x, y, TCODColor(0, 0, 255));
-                        else
-                                solidOverlayCon->setCharBackground(x, y, TCODColor(255, 255, 255));
-                }
+		/*
+		if(gui->useSolidToggleButton->isPressed()) {
+				if(brush->solid)
+						solidOverlayCon->setCharBackground(x, y, TCODColor(0, 0, 255));
+				else
+						solidOverlayCon->setCharBackground(x, y, TCODColor(255, 255, 255));
+		}
+		*/
 	}
 
 void App::clearOverlay() {
 	overlayCon->setDefaultBackground(TCODColor(1, 2, 3));
 	overlayCon->clear();
 
-	solidOverlayCon->setDefaultBackground(TCODColor(1, 2, 3));
-	solidOverlayCon->clear();
+	//solidOverlayCon->setDefaultBackground(TCODColor(1, 2, 3));
+	//solidOverlayCon->clear();
 }
 
 void App::applyOverlayToCanvas() {
-        TCODConsole::blit(overlayCon, 0, 0, canvasWidth, canvasHeight, canvasCon, 0, 0);
-        TCODConsole::blit(solidOverlayCon, 0, 0, canvasWidth, canvasHeight, solidCon, 0, 0);
+	if (canvasCon==NULL) return;
+
+	TCODConsole::blit(overlayCon, 0, 0, canvasWidth, canvasHeight, canvasCon, 0, 0);
+    //TCODConsole::blit(solidOverlayCon, 0, 0, canvasWidth, canvasHeight, solidCon, 0, 0);
 }
 
 void App::applyCanvasToOverlay() {
-        TCODConsole::blit(canvasCon, 0, 0, canvasWidth, canvasHeight, overlayCon, 0, 0);
-        TCODConsole::blit(solidCon, 0, 0, canvasWidth, canvasHeight, solidOverlayCon, 0, 0);
+	if (canvasCon==NULL) return;
+
+	canvasCon->setKeyColor(TCODColor(1,2,3));
+    TCODConsole::blit(canvasCon, 0, 0, canvasWidth, canvasHeight, overlayCon, 0, 0);
+    canvasCon->setKeyColor(keyColour);
+    //TCODConsole::blit(solidCon, 0, 0, canvasWidth, canvasHeight, solidOverlayCon, 0, 0);
 }
 
 void App::setOverlayFade(float fade) {

@@ -10,6 +10,7 @@
 #include "fill_operation.h"
 #include "fov_operation.h"
 #include "import_operation.h"
+#include "layer_widget.h"
 #include "lbutton.h"
 #include "line_operation.h"
 #include "lradio_button.h"
@@ -403,7 +404,8 @@ void AppGui::build() {
 	ghSlider->setCallback(changeGridDimensionsCbk, &app->gridH);
 	view->addWidget(ghSlider);
 
-
+	// Layer toolbar
+	layerWidget = new LayerWidget(0,0,LEFT_TOOLBAR_WIDTH);
 
 	vboxLeft->addWidget(brushSelector);
 
@@ -415,6 +417,7 @@ void AppGui::build() {
 
 	vboxRight->addWidget(tools);
 	vboxRight->addWidget(options);
+	vboxRight->addWidget(layerWidget);
 
 	HBox* hb = new HBox(0,0,1);
 	hb->addWidget(vbInLeft);

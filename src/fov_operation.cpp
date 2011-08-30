@@ -14,6 +14,8 @@ FovOperation::~FovOperation() {
 }
 
 void FovOperation::start() {
+	assert(true and "Fov Operation not implemented");
+
     app->gui->fovRadiusSlider->setVisible(true);
     app->gui->fovLightWallsToggleButton->setVisible(true);
     app->gui->fovTypeButton->setVisible(true);
@@ -21,10 +23,12 @@ void FovOperation::start() {
     map = new TCODMap(app->canvasWidth, app->canvasHeight);
     for(int x = 0; x < app->canvasWidth; x++) {
         for(int y = 0; y < app->canvasHeight; y++) {
+        	/*
             if(app->solidCon->getCharBackground(x, y) == TCODColor(255, 255, 255)) // No Solid
                 map->setProperties(x, y, true, true);
             else
                 map->setProperties(x, y, false, false);
+                */
         }
     }
 

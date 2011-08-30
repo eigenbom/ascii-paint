@@ -35,11 +35,14 @@ void PickOperation::update() {
 		if(app->gui->pickBackgroundToggleButton->isPressed())
 			brush->back = app->canvasCon->getCharBackground(mouseX, mouseY);
 		if(app->gui->pickSolidToggleButton->isPressed()) {
+			brush->solid = true;
+			/*
 			if(app->solidCon->getCharBackground(mouseX, mouseY) == TCODColor(0, 0, 255)) {
 				brush->solid = true;
 			} else {
 				brush->solid = false;
 			}
+			*/
 		}
 
 		// Go back to previous operation

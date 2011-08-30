@@ -12,16 +12,20 @@ PathOperation::~PathOperation() {
 }
 
 void PathOperation::start() {
+	assert(true and "Path Operation not implemented");
+
 	app->gui->pathLengthLabel->setVisible(true);
 	app->gui->pathDiagonalToggleButton->setVisible(true);
 
 	map = new TCODMap(app->canvasWidth, app->canvasHeight);
 	for(int x = 0; x < app->canvasWidth; x++) {
 		for(int y = 0; y < app->canvasHeight; y++) {
+			/*
 			if(app->solidCon->getCharBackground(x, y) == TCODColor(255, 255, 255)) // No Solid
 				map->setProperties(x, y, true, true);
 			else
 				map->setProperties(x, y, false, false);
+				*/
 		}
 	}
 
