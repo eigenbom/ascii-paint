@@ -78,6 +78,12 @@ bool fourCCequals(uint32 u, const char* str){
 	return fourCC(str)==u;
 }
 
+std::string fromFourCC(uint32 u){
+	const char* c = (const char*)(&u);
+	const char cc[] = {c[0],c[1],c[2],c[3],'\0'};
+	return cc;
+}
+
 void put8(uint8 d, FILE* fp){
 	fwrite(&d,1,1,fp);
 }
@@ -133,13 +139,38 @@ typedef struct {
 	uint32 format;
 } ImageDetailsV1;
 
-typedef struct {
+// Layers
+
+struct LayerV1 {
 	uint32 name; // a four character name
 	uint32 mode; // compositing mode (0 for now)
 	uint32 index; // index into layer list (should mirror order in file)
 	uint32 dataSize; // size of the data chunk immediately following this (redundancy check)
 	// uint8* data; // the data
-} LayerV1;
+};
+
+struct LayerV2 {
+	uint32 name; // a four character name
+	uint32 mode; // compositing mode (0 for now)
+	uint32 fgalpha; // foreground alpha (0-255)
+	uint32 bgalpha; // background alpha (0-255)
+	uint32 visible; // 1/0 true/false
+	uint32 index; // index into layer list (should mirror order in file)
+	uint32 dataSize; // size of the data chunk immediately following this (redundancy check)
+	// uint8* data; // the data
+
+	// Update a V1 Layer to a V2 Layer
+	LayerV2& operator=(LayerV1& v1){
+		this->name = v1.name;
+		this->mode = v1.mode;
+		this->fgalpha = l32(255);
+		this->bgalpha = l32(255);
+		this->visible = l32(1);
+		this->index = v1.index;
+		this->dataSize = v1.dataSize;
+		return *this;
+	}
+};
 
 // fix the endianness
 void fix(SettingsDataV1& s){
@@ -158,6 +189,16 @@ void fix(ImageDetailsV1& v){
 void fix(LayerV1& l){
 	// l.name
 	fix(l.mode);
+	fix(l.index);
+	fix(l.dataSize);
+}
+
+void fix(LayerV2& l){
+	// l.name
+	fix(l.mode);
+	fix(l.fgalpha);
+	fix(l.bgalpha);
+	fix(l.visible);
 	fix(l.index);
 	fix(l.dataSize);
 }
@@ -219,32 +260,32 @@ bool ApfFile::Save(std::string filename){
 				riffSize += 4+4+imgDetailsSize;
 
 				// now write the layers as a RIFF list
+				// the first layer is the lowest layer
 				// Assume imgData filter = uncompressed, and imgData format = CRGB
 				uint32 layerImageSize = imgData.width*imgData.height*7;
 				uint32 layerChunkSize = sizeof(uint32) /* version */
-						+ sizeof(LayerV1) /* header */
+						+ sizeof(LayerV2) /* header */
 						+ layerImageSize; /* data */
 
-
-				//uint32 LISTSize = sizeof(uint32) /*list type: "layr"*/
-				//				+ sizeof(uint32) /*first "layr"*/
-				//				+ sizeof(uint32) /*layr size*/
-				//				+ layerChunkSize
-				//				+ ((layerChunkSize&1)?1:0);
-
-				//putFourCC("LIST",fp);
-				//put32(l32(LISTSize),fp);
-				//putFourCC("LAYR",fp); // layr list
+				// for each layer
+				const TCODList<Layer*>& layers = app->getLayers();
+				for(int i=0;i<layers.size();i++){
+					Layer* l = layers.get(i);
 					putFourCC("layr",fp); // layer
 					put32(l32(layerChunkSize),fp);
-						put32(l32(1),fp); // version!
-						putFourCC("dflt",fp); // name of layer
+						// VERSION ->
+						put32(l32(2),fp); // version!
+						// Data
+						putFourCC(l->name.c_str(),fp); // name of layer
 						put32(l32(0),fp); // mode
-						put32(l32(0),fp); // index
+						put32(l32(l->fgalpha),fp); // foreground alpha
+						put32(l32(l->bgalpha),fp); // background alpha
+						put32(l->visible?l32(1):l32(0),fp); // visible?
+						put32(l32(i),fp); // index
 						put32(l32(layerImageSize),fp);
 
 						// now write out the data
-						CanvasImage *img = app->getCanvasImage();
+						CanvasImage *img = app->getCanvasImage(l->name);
 
 						// Write the brush data for every brush in the image
 						for(int x = 0; x < app->canvasWidth; x++) {
@@ -259,12 +300,15 @@ bool ApfFile::Save(std::string filename){
 								put8(b.back.b, fp);
 							}
 						}
-					if (layerChunkSize&1){
-						put8(0,fp); // padding bit
-						riffSize++;
-					}
+						delete img;
 
-				riffSize += 2*sizeof(uint32)+layerChunkSize;
+						if (layerChunkSize&1){
+							put8(0,fp); // padding bit
+							riffSize++;
+						}
+
+					riffSize += 2*sizeof(uint32)+layerChunkSize;
+				}
 
 		fsetpos(fp,&posRiffSize);
 		put32(l32(riffSize),fp);
@@ -276,7 +320,7 @@ bool ApfFile::Save(std::string filename){
 
 
 struct LayerData {
-	LayerV1 header;
+	LayerV2 header;
 	uint8* data; // dynamically allocated
 };
 
@@ -383,6 +427,10 @@ bool ApfFile::Load(std::string filename){
 							app->canvasWidth = data.details.width;
 							app->canvasHeight = data.details.height;
 							app->initCanvas();
+
+							// delete new layer
+							app->deleteLayer(app->getCurrentLayer()->name);
+
 						}
 						else if (seg==layr){
 							// printf("Found a layer\n");
@@ -395,22 +443,42 @@ bool ApfFile::Load(std::string filename){
 							uint32 ver;
 							get32(&ver,fp);
 							fix(ver);
-							if (ver!=1) ERR_NEWER("layer spec");
-							LayerV1 layerHeader;
-							if (not getData((void*)&layerHeader, sizeof layerHeader, fp)) ERR("Can't read layer header.");
-							fix(layerHeader);
+							if (ver>2) ERR_NEWER("layer spec");
 
-							// creat new layer data
-							LayerData* ld = new LayerData;
-							ld->header = layerHeader; // already fix'd
-							ld->data = new uint8[ld->header.dataSize];
+							if (ver==1){
+								LayerV1 layerHeader;
+								if (not getData((void*)&layerHeader, sizeof layerHeader, fp)) ERR("Can't read layer header.");
+								fix(layerHeader);
 
-							// Read in the data chunk
-							getData((void*) ld->data, ld->header.dataSize, fp);
+								// creat new layer data
+								LayerData* ld = new LayerData;
+								ld->header = layerHeader; // already fix'd
+								ld->data = new uint8[ld->header.dataSize];
 
-							// push layer onto the list
-							data.currentLayer = ld;
-							data.layers.push(ld);
+								// Read in the data chunk
+								getData((void*) ld->data, ld->header.dataSize, fp);
+
+								// push layer onto the list
+								data.currentLayer = ld;
+								data.layers.push(ld);
+							}
+							else if (ver==2){
+								LayerV2 layerHeader;
+								if (not getData((void*)&layerHeader, sizeof layerHeader, fp)) ERR("Can't read layer header.");
+								fix(layerHeader);
+
+								// creat new layer data
+								LayerData* ld = new LayerData;
+								ld->header = layerHeader; // already fix'd
+								ld->data = new uint8[ld->header.dataSize];
+
+								// Read in the data chunk
+								getData((void*) ld->data, ld->header.dataSize, fp);
+
+								// push layer onto the list
+								data.currentLayer = ld;
+								data.layers.push(ld);
+							}
 						}
 						else {
 							// skip unknown segment
@@ -434,14 +502,22 @@ bool ApfFile::Load(std::string filename){
 		}
 
 		// finally, copy the layers into the current document
-		if (data.layers.size()>0){
+		for(int i=0;i<data.layers.size();i++){
 			// for now, just load the first layer
-			LayerData* l = data.layers.get(0);
+			LayerData* ld = data.layers.get(i);
 
-			// TODO: parse header
-			// l->header
-			uint8* imgData = l->data;
+			// canvas width/height have already been set...
+			Layer* l = app->addNewLayer();
 
+			// Parse layer header
+			l->name = fromFourCC(ld->header.name);
+			l->fgalpha = ld->header.fgalpha;
+			l->bgalpha = ld->header.bgalpha;
+			l->visible = (ld->header.visible==1);
+			// l->compositingMode =
+
+			// Copy data into currently selected canvas
+			uint8* imgData = ld->data;
 			CanvasImage *img = new CanvasImage;
 			// Write the brush data for every brush in the image
 			int index = 0;
@@ -455,7 +531,7 @@ bool ApfFile::Load(std::string filename){
 					b.back.r = (uint8)(imgData[index++]);
 					b.back.g = (uint8)(imgData[index++]);
 					b.back.b = (uint8)(imgData[index++]);
-					b.solid = false; // deprecated
+					b.solid = true; // deprecated
 					b.walkable = true; // deprecated
 					img->push_back(b);
 				}
@@ -463,15 +539,16 @@ bool ApfFile::Load(std::string filename){
 
 			app->setCanvasImage(*img);
 			delete img;
-
-			// then free all the temporary layer data
-			for(int i=0;i<data.layers.size();i++){
-				delete[]data.layers.get(i)->data;
-				delete data.layers.get(i);
-			}
 		}
 
+		// then free all the temporary layer data
+		for(int i=0;i<data.layers.size();i++){
+			delete[]data.layers.get(i)->data;
+			delete data.layers.get(i);
+		}
 
+		// and update the layer widget
+		app->gui->layerWidget->regenerateLayerList();
 	}
 	fclose(fp);
 

@@ -65,6 +65,7 @@ void OpenOperation::start() {
 					app->canvasHeight = zipFile.getInt();
 
 					app->initCanvas();
+					app->gui->layerWidget->regenerateLayerList();
 
 					CanvasImage *img = new CanvasImage;
 
@@ -107,6 +108,7 @@ void OpenOperation::start() {
 					fscanf(fp, "%i %i", &app->canvasWidth, &app->canvasHeight);
 
 					app->initCanvas();
+					app->gui->layerWidget->regenerateLayerList();
 
 					CanvasImage *img = new CanvasImage;
 

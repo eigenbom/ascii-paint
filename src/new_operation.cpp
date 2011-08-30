@@ -53,6 +53,9 @@ void NewOperation::start() {
 			app->canvasHeight = atoi(heightSlider.getValue());
 			app->initCanvas();
 		}
+
+		// reset layer view
+		app->gui->layerWidget->regenerateLayerList();
 	}
 
 	app->changeOperation(app->previousOperation);
