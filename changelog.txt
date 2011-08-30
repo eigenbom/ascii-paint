@@ -5,7 +5,15 @@ ASCII-Paint Changelog:
 - Removed feature
 * Bugfix
 
---- Changelog for eigenbom fork ---
+--- Changelog for eigenbom/bp.io fork ---
+
+v0.4
++ Added Layers
+TODO: 
+- Get layers working properly with image exporters (incl gif)
+- Fix copy/paste, and colour picking to work with individual and merged layers
+- Save key colour in .apf file
+- Start on better layer composition modes
 
 v0.3.3
 + Added new file format, the Ascii Paint Format ".apf", which

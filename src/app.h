@@ -44,7 +44,7 @@ class App {
 		bool shouldOperationUpdate();
 
 		void setCanvasImage(CanvasImage& canvasImg);
-		CanvasImage* getCanvasImage();
+		CanvasImage* getCanvasImage(std::string layerName="");
 
 		void clearOverlay();
 		void applyBrushToOverlayCell(int x, int y, Brush *brush);
@@ -62,6 +62,8 @@ class App {
         void selectLayer(std::string name);
         /// Retrieve the current layer (may be NULL)
         Layer* getCurrentLayer();
+        /// Retrieve the named layer (may be NULL)
+        Layer* getLayer(std::string name);
         /// Get all layers
         const TCODList<Layer*>& getLayers();
 
