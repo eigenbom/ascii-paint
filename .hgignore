@@ -5,5 +5,5 @@ build
 *.DS_Store
 .project
 .svn
-ascii-paint-bpio.zip
+ascii-paint-bpio*.zip
 b\*

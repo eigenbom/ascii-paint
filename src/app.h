@@ -4,6 +4,7 @@
 #include <string>
 #include <vector>
 #include <list>
+#include <cassert>
 
 #include "app_gui.h"
 #include "app_data.h"
@@ -12,6 +13,7 @@
 
 #include "palette.h"
 #include "brush.h"
+#include "layer.h"
 #include "color_box.h"
 #include "operation.h"
 
@@ -50,6 +52,25 @@ class App {
 		void applyCanvasToOverlay();
         void setOverlayFade(float fade);
 
+        // layer operations
+        /// \brief Add a new layer to the top.
+        /// Generated layer is returned and selected.
+        Layer* addNewLayer();
+        /// \brief Delete a named layer.
+        void deleteLayer(std::string name);
+        /// Select the named layer
+        void selectLayer(std::string name);
+        /// Retrieve the current layer (may be NULL)
+        Layer* getCurrentLayer();
+        /// Get all layers
+        const TCODList<Layer*>& getLayers();
+
+        void shiftCurrentLayerUp();
+        void shiftCurrentLayerDown();
+
+        std::string generateUniqueLayerName();
+        std::string modifyLayerNameToBeUnique(std::string name);
+
         void setGridDimensions(int w, int h);
         void setShowGrid(bool on);
 
@@ -84,6 +105,8 @@ class App {
 		bool showGrid;
 		int gridW, gridH;
 
+		TCODColor keyColour; // keying colour
+
 		int canvasWidth;
 		int canvasHeight;
 		
@@ -112,12 +135,18 @@ class App {
 		CanvasImage clipboardImage; // Result from a copy operation
 		int clipboardWidth, clipboardHeight;
 
+		// Layers
+		TCODList<Layer*> layers;
+		Layer* currentLayer;
+
 		TCODConsole *overlayCon; // Drawn over the canvas
 		TCODConsole *canvasCon;
-		TCODConsole *solidCon;
-		TCODConsole *solidOverlayCon; // This canvas holds proposed writes to solidCon
 
-                float overlayFade;
+		// Deprecated
+		// TCODConsole *solidCon;
+		// TCODConsole *solidOverlayCon; // This canvas holds proposed writes to solidCon
+
+        float overlayFade;
 		bool inTypingMode;
 
 		TCOD_key_t key;

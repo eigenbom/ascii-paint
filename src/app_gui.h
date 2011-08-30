@@ -3,6 +3,7 @@
 
 #include "gui/gui.hpp"
 #include "app_user.h"
+#include "layer_widget.h"
 #include "lradio_button.h"
 #include "colour_widget.h"
 
@@ -27,6 +28,8 @@ class AppGui : public AppUser {
 		TCODColor foregroundColor2;
 
 		ColourWidget* colourWidget;
+
+		LayerWidget* layerWidget;
 
 		LRadioButton *cellOperationButton;
 		LRadioButton *lineOperationButton;

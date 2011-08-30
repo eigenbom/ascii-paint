@@ -27,6 +27,8 @@ void AppData::load() {
 	windowTypeStruct->addProperty("grid_width", TCOD_TYPE_INT, true);
 	windowTypeStruct->addProperty("grid_height", TCOD_TYPE_INT, true);
 
+	windowTypeStruct->addProperty("key_color", TCOD_TYPE_COLOR, true);
+
 	TCODParserStruct *canvasTypeStruct = parser.newStructure("canvas");
 	canvasTypeStruct->addProperty("width", TCOD_TYPE_INT, true);
 	canvasTypeStruct->addProperty("height", TCOD_TYPE_INT, true);
@@ -63,6 +65,8 @@ void AppData::load() {
 	app->showGrid = parser.getBoolProperty("window.show_grid");
 	app->gridW = parser.getIntProperty("window.grid_width");
 	app->gridH = parser.getIntProperty("window.grid_height");
+
+	app->keyColour = parser.getColorProperty("window.key_color");
 
 	if(strcmp(parser.getStringProperty("window.grid_mode"), "corners")==0) {
 		app->gridMode = GRID_MODE_CORNERS;
@@ -127,6 +131,8 @@ void AppData::save() {
 				(app->gridMode==GRID_MODE_BULLETS)? "bullets" : "corners");
 		fprintf(fp, "\tgrid_width = %i\n", app->gridW);
 		fprintf(fp, "\tgrid_height = %i\n", app->gridH);
+
+		fprintf(fp, "\n\tkey_color = \"%i, %i, %i\" // colour that maps to transparency\n", app->keyColour.r, app->keyColour.g, app->keyColour.b);
 
 	} fprintf(fp, "}\n");
 
