@@ -7,6 +7,12 @@ ASCII-Paint Changelog:
 
 --- Changelog for eigenbom/bp.io fork ---
 
+v0.4.1
++ Resize (can now anchor canvas to any corner or edge during resize) 
+* Save now adds an ".apf" suffix to filenames with no ".apf",".asc", or ".ascz" suffix
+/ Added COPYING.txt and COPYING_libgd.txt (ASCII-Paint is governed by the LGPL)
+ 
+
 v0.4
 + Added Layers
 TODO: 

@@ -22,6 +22,19 @@ class Operation;
 #define GRID_MODE_BULLETS 0
 #define GRID_MODE_CORNERS 1
 
+enum ResizePos {
+	RP_N,RP_S,RP_E,RP_W,RP_NE,RP_NW,RP_SE,RP_SW,RP_CENTER,RP_ABSOLUTE
+};
+
+struct ResizeInfo {
+	ResizePos pos;
+
+	// extra info
+	int x, y; // for absolute positioning
+
+	ResizeInfo():pos(RP_NW){} // by default position top-left
+};
+
 // Basically a vector representing each cell in the canvas/image
 // To access the cell at position (x, y) use:
 // CanvasImage[x + y * width]
@@ -38,7 +51,7 @@ class App {
 		void initCanvas();
 		void initOperations();
 
-		void resizeCanvas(int newWidth, int newHeight);
+		void resizeCanvas(int newWidth, int newHeight, ResizeInfo resizeInfo = ResizeInfo());
 
 		void changeOperation(Operation *newOperation);
 		bool shouldOperationUpdate();

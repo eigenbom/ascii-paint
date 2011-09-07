@@ -1,5 +1,6 @@
 #include <cstdio>
 #include <cstring>
+#include <iostream>
 
 #include "libtcod.hpp"
 #include "gui/gui.hpp"
@@ -57,16 +58,28 @@ bool doSave(App *app) {
 		// If filename ends with .apf use the ApfFile exported
 		std::string ascEx = ".asc";
 		std::string ascExZ = ".ascz";
-
 		std::string apfEx = ".apf";
-		if (hasEnding(app->filename,apfEx)){
+
+		bool apfSuffix = hasEnding(app->filename,apfEx);
+		bool ascSuffix = hasEnding(app->filename,ascEx);
+		bool asczSuffix = hasEnding(app->filename,ascExZ);
+
+		if (apfSuffix or not (ascSuffix or asczSuffix)){
+			if (not apfSuffix){ // then must have a non asc or ascz suffix too
+				// add an .apf suffix
+				app->filename += ".apf";
+			}
+			std::cout << "Saving as \"" << app->filename << "\"\n";
+
 			if (!ApfFile::Save(app->filename)){
 				MessageBox msgBox2("Error", "The file could not be saved", 1);
 				msgBox2.show();
 				return false;
 			}
 		}
-		else if (hasEnding(app->filename,ascEx) or hasEnding(app->filename,ascExZ)){
+		else if (ascSuffix or asczSuffix){
+			std::cout << "Saving as \"" << app->filename << "\"\n";
+
 			// Save as a .asc or .ascz file
 			fp = fopen(app->filename.c_str(), "w");
 			if(fp == NULL) {
