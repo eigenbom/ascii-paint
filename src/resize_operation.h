@@ -3,6 +3,8 @@
 
 #include "operation.h"
 
+struct ResizeInfo; // forward decl
+
 class ResizeOperation : public Operation {
 	public:
 		ResizeOperation();
@@ -11,7 +13,9 @@ class ResizeOperation : public Operation {
 		virtual void update();
 		virtual void end();
 
+		void setResizeInfo(ResizeInfo* ri); // takes ownership
 	private:
+		ResizeInfo* resizeInfo;
 };
 
 #endif

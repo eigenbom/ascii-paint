@@ -293,7 +293,7 @@ void App::initOperations() {
 	changeOperation(new CellOperation);
 }
 
-void App::resizeCanvas(int newWidth, int newHeight){
+void App::resizeCanvas(int newWidth, int newHeight, ResizeInfo resizeInfo){
 	// Create new smaller canvases
 	// Blit the old canvases onto the new ones
 	// And then assign the old ones to the new ones
@@ -301,8 +301,26 @@ void App::resizeCanvas(int newWidth, int newHeight){
 
 	int copyW = std::min(newWidth,canvasWidth);
 	int copyH = std::min(newHeight,canvasHeight);
+
+	int nw = newWidth, cw = canvasWidth, nh = newHeight, ch = canvasHeight;
+
 	canvasWidth = newWidth;
 	canvasHeight = newHeight;
+
+	// position to place old canvas
+	int x = 0, y = 0;
+	switch (resizeInfo.pos){
+		case RP_N: {x=(nw-cw)/2;	y=0;		break;}
+		case RP_S: {x=(nw-cw)/2;	y=nh-ch;	break;}
+		case RP_W: {x=0;	y=(nh-ch)/2;	break;}
+		case RP_E: {x=nw-cw;	y=(nh-ch)/2;	break;}
+		case RP_NE: {x=nw-cw; y=0; break;}
+		case RP_NW: {x=0; y=0; break;}
+		case RP_SE: {x=nw-cw; y=nh-ch; break;}
+		case RP_SW: {x=0; y=nh-ch; break;}
+		case RP_CENTER: {x=(nw-cw)/2; y=(nh-ch)/2; break;}
+		case RP_ABSOLUTE: {x=resizeInfo.x; y=resizeInfo.y; break;}
+	}
 
 	// resize all layers
 	for(int i=0;i<layers.size();i++){
@@ -313,7 +331,8 @@ void App::resizeCanvas(int newWidth, int newHeight){
 		newCanvasCon->setDefaultBackground(keyColour); // brush1.back);
 		newCanvasCon->setKeyColor(keyColour); // brush1.back);
 		newCanvasCon->clear();
-		TCODConsole::blit(l->canvasCon,0,0,copyW,copyH,newCanvasCon,0,0);
+		// TCODConsole::blit(l->canvasCon,0,0,copyW,copyH,newCanvasCon,x,y);
+		TCODConsole::blit(l->canvasCon,0,0,cw,ch,newCanvasCon,x,y);
 		delete l->canvasCon;
 		l->canvasCon = newCanvasCon;
 	}
@@ -324,7 +343,8 @@ void App::resizeCanvas(int newWidth, int newHeight){
 	newOverlayCon->setDefaultBackground(TCODColor(1, 2, 3)); // 1,2,3 is an uncommon color ;)
 	newOverlayCon->setKeyColor(TCODColor(1, 2, 3));
 	newOverlayCon->clear();
-	TCODConsole::blit(overlayCon,0,0,copyW,copyH,newOverlayCon,0,0);
+	// TCODConsole::blit(overlayCon,0,0,copyW,copyH,newOverlayCon,x,y);
+	TCODConsole::blit(overlayCon,0,0,cw,ch,newOverlayCon,x,y);
 	delete overlayCon;
 	overlayCon = newOverlayCon;
 }
