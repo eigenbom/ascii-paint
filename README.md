@@ -1,12 +1,15 @@
 Ascii-Paint
 ===========
 
-This is a fork of Ascii-Paint ( http://code.google.com/p/ascii-paint/ ) which revamps the GUI and adds a number of new features.
+![Animated ascii gif](https://raw.githubusercontent.com/eigenbom/ascii-paint/master/screens/walk3.gif)
+
+
+This is a fork of Ascii-Paint which revamps the GUI and adds a number of new features.
 
 ASCII-Paint is a simple open source painting program which uses ASCII characters instead of pixels. It is made for roguelike developers but it can be used by anyone. 
 
 Developers:
-*  2011- Ben Porter
+*  2011-2012 Ben Porter
 *  2009-2010 Shafqat Bhuiyan & Jice
 
 Quick Start
