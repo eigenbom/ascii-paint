@@ -1,3 +1,10 @@
+Archived
+========
+
+This project is archived and is no longer maintained. For an alternative, see https://www.gridsagegames.com/rexpaint/.
+
+
+
 Ascii-Paint
 ===========
 
